@@ -117,7 +117,7 @@ async function parseSVG(props, type, svg) {
       }
       if (props.notes != null) {
         style = style.replace(/stroke:[^;]+;/, `stroke:${props.color};`);
-        style = style.replace(/stroke-width:[^;]+;/, `stroke-width:1.5;`);
+        style = style.replace(/stroke-width:[^;]+;/, `stroke-width:2.5;`);
       }
 
       el.setAttribute("style", style);

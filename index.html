@@ -37,22 +37,35 @@
       <h5 style="color:red; margin-bottom:0px;">FOR FLIGHT SIMULATION PURPOSES ONLY</h5>
     </div>
     <p style="text-align:center; margin:10px 0px 0px 0px; font-weight:200px;"></p>
-    <p style="text-align:center; margin:0px 50px 0px 50px; border-radius:4px; padding:4px; font-weight:450; font-size:14px; color:var(--textcolor-dark)">Map Toggles</p>
+    <p
+      style="text-align:center; margin:0px 50px 0px 50px; border-radius:4px; padding:4px; font-weight:450; font-size:14px; color:var(--textcolor-dark)">
+      Map Toggles</p>
     <div id="general-options" class="flex-center">
       <button type="button" id="reset-layers"><i class="fa-solid fa-layer-group"></i> Layers</button>
       <button type="button" id="toggle-markers"><i class="fa-solid fa-tag"></i> Labels</button>
       <button type="button" id="toggle-basemap"><i class="fa-solid fa-map"></i> Map</button>
       <button type="button" id="toggle-basemap"><i class="fa-solid fa-headset"></i> Callsign</button>
       <button type="button" id="toggle-darkmode"><i class="fa-solid fa-moon"></i> Dark Mode</button>
-      <button type="button" id="help-button" style="background:#83c995"><i class="fa-solid fa-question"></i> Help</button>
+      <button type="button" id="help-button" style="background:#83c995"><i class="fa-solid fa-question"></i>
+        Help</button>
     </div>
-    <div id="search-section"> 
+    <div id="search-section">
       <input type="text" id="search-input" placeholder="Search">
       <div id="search-results"></div>
     </div>
     <div style="display: flex; justify-content: center; margin-top: 5px; gap: 5px;">
-      <button type="button" id="btn-tracon"><img width="20" height="20" src="https://img.icons8.com/ios-glyphs/30/airport-building.png" alt="airport-building"/> Terminal</button>
-      <button type="button" id="btn-enroute"><img width="20" height="20" src="https://img.icons8.com/fluency-systems-regular/20/around-the-globe.png" alt="around-the-globe"/> Enroute</button>
+      <button type="button" id="btn-tracon"><img width="20" height="20"
+          src="https://img.icons8.com/ios-glyphs/30/airport-building.png" alt="airport-building" /> Terminal</button>
+      <button type="button" id="btn-enroute"><img width="20" height="20"
+          src="https://img.icons8.com/fluency-systems-regular/20/around-the-globe.png" alt="around-the-globe" />
+        Enroute</button>
+    </div>
+    <div id="category-filters" class="flex-center">
+      <button class="category-filter" data-category="sectors">Sectors</button>
+      <button class="category-filter" data-category="stars">STARs</button>
+      <button class="category-filter" data-category="sids">SIDs</button>
+      <button class="category-filter" data-category="videomap">Videomap</button>
+      <button id="reset-category-filter" style="background:#c06666; color:white;">Reset</button>
     </div>
     <div id="sidebar"></div>
   </div>
@@ -92,8 +105,10 @@
     <div id="help-content">
       <span id="close-help">&times;</span>
       <h2>Welcome to the ZNY Airspace Visualizer!</h2>
-      <p>This tool is mainly meant to help visualize TRACON & Enroute airspace within ZNY ARTCC. Procedures such as SIDs/STARs may also be overlayed.</p>
-      <p><b>NOTE:</b> This tool should only be used as a supplicant, always read and check the facility specific SOP as not all information may be displayed here.</p>
+      <p>This tool is mainly meant to help visualize TRACON & Enroute airspace within ZNY ARTCC. Procedures such as
+        SIDs/STARs may also be overlayed.</p>
+      <p><b>NOTE:</b> This tool should only be used as a supplicant, always read and check the facility specific SOP as
+        not all information may be displayed here.</p>
       <ul>
         <li><b>Map Toggles:</b></li>
         <ul>
@@ -104,12 +119,19 @@
           <li><b>Dark Mode:</b> Does what the tin says!</li>
         </ul>
         <li><b>Map Layers:</b> Top right contains a selection of maps layers.</li>
-        <li><b>Search:</b> Search for something. Will match to names of procedures (FQM3, JFK5), airports (JFK, EWR, LGA), configs (4s, 31s, D4L4/31), or sectors (Area A, N56)</li>
+        <li><b>Search:</b> Search for something. Will match to names of procedures (FQM3, JFK5), airports (JFK, EWR,
+          LGA), configs (4s, 31s, D4L4/31), or sectors (Area A, N56)</li>
         <li><b>Terminal / Enroute:</b> Switch between files for the TRACON or Enroute</li>
-        <li><b>Menu Bars:</b> Left side will contain options for toggling main files (sectors, procedures, videomaps). Right menu will be enabled when airspace files are selected, allowing for toggling specific positions (N2G, N2K, N4P).</li>
-        <li><b>URL Linking:</b> Any changes to features/layers on the map will generate a unqiue URL that can be reloaded to an exact configuration. For TRACON sector files, specific position configs are also included but not for ENROUTE files.</li>
+        <li><b>Menu Bars:</b> Left side will contain options for toggling main files (sectors, procedures, videomaps).
+          Right menu will be enabled when airspace files are selected, allowing for toggling specific positions (N2G,
+          N2K, N4P).</li>
+        <li><b>URL Linking:</b> Any changes to features/layers on the map will generate a unqiue URL that can be
+          reloaded to an exact configuration. For TRACON sector files, specific position configs are also included but
+          not for ENROUTE files.</li>
       </ul>
-      <p style="color:red;">Not for real world navigation. This site is in no way affiliated with the FAA, New York TRACON or New York ARTCC, and no information found on this site should ever be used for real world flight planning, operation, air traffic control or air traffic management</p>
+      <p style="color:red;">Not for real world navigation. This site is in no way affiliated with the FAA, New York
+        TRACON or New York ARTCC, and no information found on this site should ever be used for real world flight
+        planning, operation, air traffic control or air traffic management</p>
     </div>
   </div>
 </body>
@@ -151,6 +173,21 @@
   });
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') helpModal.classList.add('hidden');
+  });
+
+  // Toggle the filter selections
+  const traconBtn = document.getElementById("btn-tracon");
+  const enrouteBtn = document.getElementById("btn-enroute");
+  const categoryFilters = document.getElementById("category-filters");
+  const resetFilterBtn = document.getElementById("reset-category-filter");
+
+  traconBtn.addEventListener("click", () => {
+    resetFilterBtn.click()
+    categoryFilters.style.display = "grid";
+  });
+  enrouteBtn.addEventListener("click", () => {
+    resetFilterBtn.click()
+    categoryFilters.style.display = "none";
   });
 </script>
 

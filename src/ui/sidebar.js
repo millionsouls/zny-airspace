@@ -174,6 +174,7 @@ function buildSidebar(GEODATA, GEOLAYERS, map, updateURL, activeDomain = 'tracon
       dropdown.appendChild(container);
       domainWrapper.appendChild(dropdown);
     });
+    attachCategoryFilterListeners();
 
     sidebar.appendChild(domainWrapper);
   });
@@ -197,5 +198,98 @@ function attachSidebarListeners(sidebar) {
     }
   });
 }
+
+function applyCategoryFilter(categoryKey) {
+  const displayLabel = categoryMap[categoryKey].toLowerCase();
+
+  document.querySelectorAll("#sidebar .dropdown").forEach(dropdown => {
+    const toggle = dropdown.querySelector(".dropdown-toggle");
+    const container = dropdown.querySelector(".dropdown-container");
+
+    let foundMatchingItems = false;
+
+    Array.from(container.children).forEach(child => {
+      // Hide category labels (bold divs) always on filter
+      if (child.tagName === "DIV" && child.style.fontWeight === "600") {
+        child.style.display = "none";
+        return; // skip further checks for this element
+      }
+
+      // For popup groups (with class popup-sidemenu), show/hide by matching category
+      if (child.classList.contains("popup-sidemenu")) {
+        // Show popup container only if matches filter
+        const matchesCategory = child.previousSibling?.textContent?.toLowerCase().includes(displayLabel);
+        child.style.display = matchesCategory ? "flex" : "none";
+        if (matchesCategory) foundMatchingItems = true;
+        return;
+      }
+
+      // For sidemenu-toggle (popup group toggler) divs
+      if (child.classList.contains("sidemenu-toggle")) {
+        const matchesCategory = child.textContent.toLowerCase().includes(displayLabel);
+        child.style.display = matchesCategory ? "" : "none";
+        return;
+      }
+
+      // For normal items (checkbox divs)
+      // Check if they belong to the selected category by checking their id or other attribute
+      // The id format is 'toggle-${airport}${category}${name}' so we can check if it includes categoryKey
+      if (child.querySelector) {
+        const checkbox = child.querySelector("input[type=checkbox]");
+        if (checkbox) {
+          // Check if checkbox id contains categoryKey (like "sectors", "stars", etc)
+          const belongsToCategory = checkbox.id.toLowerCase().includes(categoryKey.toLowerCase());
+          if (belongsToCategory) {
+            child.style.display = "";
+            foundMatchingItems = true;
+          } else {
+            child.style.display = "none";
+          }
+        }
+      }
+    });
+
+    // Show or hide entire dropdown and container depending on matches found
+    if (foundMatchingItems) {
+      dropdown.style.display = "block";
+      container.style.display = "block";
+      toggle.classList.add("open");
+    } else {
+      dropdown.style.display = "none";
+      container.style.display = "none";
+      toggle.classList.remove("open");
+    }
+  });
+}
+
+
+function attachCategoryFilterListeners() {
+  document.querySelectorAll(".category-filter").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const category = btn.dataset.category;
+      applyCategoryFilter(category);
+    });
+  });
+
+  document.getElementById("reset-category-filter").addEventListener("click", () => {
+    resetCategoryFilter();
+  });
+}
+
+function resetCategoryFilter() {
+  document.querySelectorAll("#sidebar .dropdown").forEach(dropdown => {
+    dropdown.style.display = "block";
+    const container = dropdown.querySelector(".dropdown-container");
+    container.style.display = "none";
+    dropdown.querySelector(".dropdown-toggle")?.classList.remove("open");
+
+    // Show all sub-sections inside dropdown
+    container.querySelectorAll(":scope > div").forEach(group => {
+      group.style.display = "";
+    });
+  });
+}
+
+
 
 export { buildSidebar, attachSidebarListeners };
