@@ -2,7 +2,7 @@
 Display TRACON airspace boundaries and shelves on Leaflet/OSM map layer. Additional options for displaying SIDs, STARs, and video maps.\
 <b>FOR FLIGHT SIMULATION PURPOSES ONLY</b>
 
-
+Contact kevinw@nyartcc.org for questions/comments/concerns/inquiries.\
 (I'm really bad at writing documentation)
 
 ## Features
@@ -19,13 +19,15 @@ Copy/Fork/Download and run
 ```
 
 ## Structure
-`Procedures` refers to SID/STARs\
-`Sectors` refer to airspace owned by a position(s)
+All files must be in the `GEOJSON` format and contain a `FeatureCollection`. Below are two examples of the [FQM3 STAR](data/tracon/ewr/stars/FQM3.geojson) and [EWR SW](data/tracon/ewr/sectors/EWR_SW.json) files. Videomaps follow the same format but do not require a `properties` field as the geometry is plainly rendered.
 
-All files must be in the `GEOJSON` format and contain a `FeatureCollection`. Below are two examples of [FQM3 STAR](data/ewr/stars/FQM3.geojson) and [EWR SW](data/ewr/sectors/EWR_SW.json) files, addition language is provided below. Videomaps follow the same format but do not need extra `properties` as their geometry is only rendered.
+The general file structure is as follows: [`data/`](data) is the parent file where everything should be stored. Next step down are the 'TRACON/ENROUTE' folders which contain files for the respective type. These categories are hard-coded and must be edited in the code to allow for more or removed.
 
-The general file structure is as follows: [`data/`](data) is the parent file where everything should be stored. Each folder under `data/` represents a unique <i>option or group</i> such as [`JFK`](data/jfk/). This folder appears as dropdown selectors initially on the left side menu.\
-Under that folder contains `sector` which provides the airspace, `sid` and `star` which contain the procedures, and `videomap` containing the videomap(s). There can be one or none files located under the parent folder, and these will appear in the dropdown when selecting the parent option. Files under these folders provide the `togglable options` to turn a layer/sector/area/procedure's visibility on or off. `Sector` files have another feature that allows individual groups of geometries/polgons to be toggled. Polygons that have the same name property or position will be grouped and toggled together.
+Each folder under those represents a unique <i>option or group</i> such as [`JFK`](data/tracon/jfk). These folder create an unique menu option.
+
+Under each folder contains `sector` which provides the airspace geometry, `sid` and `star` which contain the procedure(s), and `videomap` containing the videomap(s). You do not need to create these particular sub-folders, as the code can attempt figure out what they are by themselves, these are purely for organization purposes or clarity.
+
+Finally, these individual .geojson files create an option in the menu to turn a layer/sector/area/procedure's visibility on or off. TRACON `sector` files have another feature that allows individual groups of geometries/polgons to be toggled. For example, within [`JFK_4s`](data/tracon/jfk/sectors/JFK_4s.json), the positions `2G, 2K, 2J, 2A, etc` can be individually toggled. <b>Changes to any position's visibility will be reflected in the URL</b>. 
 
 <b>If new files are added or existing names are changed, [file-index.json](data/file-index.json) must be updated to incorporate the changes for the files to be loaded.</b> This can be done automatically via [gen-file-index](src/gen-file-index.py) or manually by the user.
 
@@ -42,6 +44,8 @@ Under that folder contains `sector` which provides the airspace, `sid` and `star
                 "speed": [],
                 "notes": null,
                 "color": "#ff0000"      # Lines and markers will be this color
+                "type": "vortac"          # What is it
+                "icon": ""                # Uses the direct .svg file link. Use only either type or icon, not both
             },
             "geometry": {
                 "type": "Point",
@@ -82,26 +86,25 @@ Under that folder contains `sector` which provides the airspace, `sid` and `star
 ```
 
 ### Geometry
-`Procedures` require two parts, a Point which represents a NAVAID/Fix present and linestring connecting them together. LineStrings be combined into one geometry and will be rendered together. Points need to be seperate as each may/need have constraints/names.
+`Procedures` require two parts, a Point which represents a NAVAID/Fix present and LineString to draw connections. LineStrings be combined into one geometry and will be rendered as one. Points need to be seperate features.
 
-`Sectors` are standard FeatureCollections of multiple polygons. It is not recommended to utilize MultiPolygons as this can break some mechanics.
+`Sectors` are standard FeatureCollections of multiple polygons. It is <b>not recommended</b> to utilize MultiPolygons as this can break some mechanics.
 
-`Videomaps` are rendered as is, ie no style changes or extras. This should be a FeatureCollection of linestrings.
+`Videomaps` are rendered as is, ie no style changes or extras. This should be a FeatureCollection of LineStrings.
 
 ### Naming Scheme
 The name of the file that appears in the selection menu is taken from a `name` property under the `FeatureCollection` if present, else it uses the full file name.
 ```
 {
     "type": "FeatureCollection",
-    "name": "This will appear in the menu if entered.",
+    "name": "This will appear as the name if entered.",
     "features": [..]
 }
 ```
 
 ### Coloring
-`Procedures` utilize the `color` property is present, else uses a default black. This color affects the outline of the infobox and changes the outline of the icon if a `note` is present. `Sectors` utilize both a `fill` and `stroke` to define colors for the area and outline of the airspace.\
+`Procedures` utilize the `color` property is present, else uses a default black. This color affects the outline of the infobox, the point itself, and the LineString. `Sectors` utilize both a `fill` and `stroke` to define colors for the area and outline of the airspace with differing opacity.\
 The color option for `sectors` is also utilized for the cursor information box. <b>Bright colors will be adjusted to black to preserve readability.</b>\
-Recommend to use the same color for both, and will use the same color if only one is present/entered.
 ```
 "color": "#ff0000"      # Procedures will use this color
 
@@ -115,6 +118,7 @@ Recommend to use the same color for both, and will use the same color if only on
 "altitudes": ['@120'],
 "speed": ['+180K', '-220'],
 ```
+The type of point or marker can be indentified via either the `type` or `icon` reference. Type is the recommended way to define it, refer to [`config`](src/config.js) for the reference table. Icon searches for the direct file name under [`here`](assets/icons/).
 
 `Sector` will display the airspace ownership. Numbers will be formated into three digits, zero(s) will be converted to SFC. Single altitudes are also handled, does not matter which one it is in.
 ```
@@ -129,6 +133,6 @@ Recommend to use the same color for both, and will use the same color if only on
 ```
 
 ### Notes
-Notes for `Procedures` and `Sectors` will appears on the top right of the cursor.
+Notes for  `Sectors` will appear in the airspace description under the cursor when hovering over.
 
-Contact kevinw@nyartcc.org for questions/comments/concerns/inquiries.
+Points that have notes in them will have a thicker border to indicate, and the note will appear upon slewing over.
