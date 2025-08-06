@@ -174,7 +174,7 @@ function buildSidebar(GEODATA, GEOLAYERS, map, updateURL, activeDomain = 'tracon
       dropdown.appendChild(container);
       domainWrapper.appendChild(dropdown);
     });
-    attachCategoryFilterListeners();
+    attachFilterListeners();
 
     sidebar.appendChild(domainWrapper);
   });
@@ -199,7 +199,7 @@ function attachSidebarListeners(sidebar) {
   });
 }
 
-function applyCategoryFilter(categoryKey) {
+function filterCategory(categoryKey) {
   const displayLabel = categoryMap[categoryKey].toLowerCase();
 
   document.querySelectorAll("#sidebar .dropdown").forEach(dropdown => {
@@ -209,13 +209,11 @@ function applyCategoryFilter(categoryKey) {
     let foundMatchingItems = false;
 
     Array.from(container.children).forEach(child => {
-      // Hide category labels (bold divs) always on filter
       if (child.tagName === "DIV" && child.style.fontWeight === "600") {
         child.style.display = "none";
         return; // skip further checks for this element
       }
 
-      // For popup groups (with class popup-sidemenu), show/hide by matching category
       if (child.classList.contains("popup-sidemenu")) {
         // Show popup container only if matches filter
         const matchesCategory = child.previousSibling?.textContent?.toLowerCase().includes(displayLabel);
@@ -224,16 +222,12 @@ function applyCategoryFilter(categoryKey) {
         return;
       }
 
-      // For sidemenu-toggle (popup group toggler) divs
       if (child.classList.contains("sidemenu-toggle")) {
         const matchesCategory = child.textContent.toLowerCase().includes(displayLabel);
         child.style.display = matchesCategory ? "" : "none";
         return;
       }
 
-      // For normal items (checkbox divs)
-      // Check if they belong to the selected category by checking their id or other attribute
-      // The id format is 'toggle-${airport}${category}${name}' so we can check if it includes categoryKey
       if (child.querySelector) {
         const checkbox = child.querySelector("input[type=checkbox]");
         if (checkbox) {
@@ -263,11 +257,11 @@ function applyCategoryFilter(categoryKey) {
 }
 
 
-function attachCategoryFilterListeners() {
+function attachFilterListeners() {
   document.querySelectorAll(".category-filter").forEach(btn => {
     btn.addEventListener("click", () => {
       const category = btn.dataset.category;
-      applyCategoryFilter(category);
+      filterCategory(category);
     });
   });
 
