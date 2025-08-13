@@ -83,11 +83,12 @@ function buildSidebar(GEODATA, GEOLAYERS, map, updateURL, activeDomain = 'tracon
       container.className = "dropdown-container";
 
       Object.entries(categories).forEach(([category, items]) => {
-        const names = (category === 'sectors' && typeof items === 'object') ? Object.keys(items) : items;
+        let names = (category === 'sectors' && typeof items === 'object') ? Object.keys(items) : items;
         if (!Array.isArray(names) || names.length === 0) return;
+        names = names.slice().sort((b, a) => b.localeCompare(a));
 
         const displayName = categoryMap[category] || category;
-        const usePopup = names.length >= 99;
+        const usePopup = names.length >= 5;
         const targetContainer = usePopup ? document.createElement("div") : container;
 
         if (usePopup) {
@@ -102,8 +103,12 @@ function buildSidebar(GEODATA, GEOLAYERS, map, updateURL, activeDomain = 'tracon
             sidebar.querySelectorAll(".popup-sidemenu").forEach(p => {
               if (p !== targetContainer) p.style.display = "none";
             });
-            targetContainer.style.display = targetContainer.style.display === "none" ? "flex" : "none";
-            targetContainer.style.top = `${groupDiv.getBoundingClientRect().top}px`;
+            if (targetContainer.style.display === "none") {
+              positionPopupSidemenu(targetContainer, groupDiv);
+              targetContainer.style.display = "flex";
+            } else {
+              targetContainer.style.display = "none";
+            }
             e.stopPropagation();
           });
 
@@ -284,6 +289,27 @@ function resetCategoryFilter() {
   });
 }
 
+function positionPopupSidemenu(popupMenu, triggerElement) {
+  // Get trigger position
+  const triggerRect = triggerElement.getBoundingClientRect();
+  // Show menu offscreen to measure height
+  popupMenu.style.display = "block";
+  popupMenu.style.visibility = "hidden";
+  const menuHeight = popupMenu.offsetHeight;
+  popupMenu.style.visibility = "";
+  popupMenu.style.display = "none";
 
+  // Calculate available space
+  const viewportHeight = window.innerHeight;
+  let top = triggerRect.top;
 
+  // If menu would overflow, move it up so it fits with 10px margin
+  if (top + menuHeight > viewportHeight - 10) {
+    top = Math.max(10, viewportHeight - menuHeight - 10);
+  }
+
+  popupMenu.style.top = `${top - 20}px`;
+}
+
+//# sourceMappingURL=sidebar.js.map
 export { buildSidebar, attachSidebarListeners };
