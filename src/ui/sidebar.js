@@ -87,7 +87,7 @@ function buildSidebar(GEODATA, GEOLAYERS, map, updateURL, activeDomain = 'tracon
         if (!Array.isArray(names) || names.length === 0) return;
 
         const displayName = categoryMap[category] || category;
-        const usePopup = names.length >= 99;
+        const usePopup = names.length >= 5;
         const targetContainer = usePopup ? document.createElement("div") : container;
 
         if (usePopup) {
