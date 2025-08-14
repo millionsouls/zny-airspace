@@ -101,7 +101,7 @@ function encodeLayers(stationData) {
   });
 
   const compactStr = domainStrings.join('||');
-  return encBase64(compactStr);
+  return compress(compactStr);
 }
 
 /**
@@ -114,7 +114,7 @@ function decodeLayers(encoded, GEOLAYERS) {
   if (!encoded) return {};
   console.log("url sees: ", encoded)
   try {
-    const decoded = decBase64(encoded);
+    const decoded = decompress(encoded);
     const domainParts = decoded.split('||');
     const result = {};
 
