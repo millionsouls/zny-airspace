@@ -44,12 +44,12 @@ function makeSectorToggle(map, posLayers, fileId, apt, cat, name, updateURL) {
 // Position popup menu near trigger
 function positionPopupSidemenu(menu, trigger) {
   const rect = trigger.getBoundingClientRect();
-  menu.style.display = "block";
+  menu.style.display = "flex";
   menu.style.visibility = "hidden";
 
   const h = menu.offsetHeight;
   menu.style.visibility = "";
-  menu.style.display = "none";
+  menu.style.display = "flex";
 
   const vh = window.innerHeight;
 
