@@ -8,8 +8,12 @@ Contact kevinw@nyartcc.org for questions/comments/concerns/inquiries.\
 ## Features
 ### Searching
 Search will find string matches for either file names, or airports/specific positions. IE: Typing `JFK` will pull up all Kennedy files, and `FQM3` will only show the FQM3 arrival.
+
 ### URL Linking
-Selected `sectors`, `procedures`, and `videomaps` will generate a unique URL that can be shared and loaded to the specific configuration. Individual position selections in a sector file will also be reflected in the URL. 
+Selected `sectors`, `procedures`, and `videomaps` will generate a unique URL that can be shared and loaded to the specific configuration. Individual position selections in a sector file will also be reflected in the URL.
+
+URLs are first custom encoded into a string and then compressed via [LzString](https://github.com/pieroxy/lz-string). Long URLs may cause issues in reloading.
+
 ### Feature Info
 Additional information pertaining to a sector's airspace or notes on a procedure will appear when hovered over. Airspace limits for `sectors` are also displayed.
 
@@ -23,9 +27,9 @@ All files must be in the `GEOJSON` format and contain a `FeatureCollection`. Bel
 
 The general file structure is as follows: [`data/`](data) is the parent file where everything should be stored. Next step down are the 'TRACON/ENROUTE' folders which contain files for the respective type. These categories are hard-coded and must be edited in the code to allow for more or removed.
 
-Each folder under those represents a unique <i>option or group</i> such as [`JFK`](data/tracon/jfk). These folder create an unique menu option.
+Each folder under those represents a unique <i>option or group</i> such as [`JFK`](data/tracon/jfk). These folders create an unique menu option:
 
-Under each folder contains `sector` which provides the airspace geometry, `sid` and `star` which contain the procedure(s), and `videomap` containing the videomap(s). You do not need to create these particular sub-folders, as the code can attempt figure out what they are by themselves, these are purely for organization purposes or clarity.
+Under each folder contains `sector` which provides the airspace geometry, `sid` and `star` which contain the procedure(s), and `videomap` containing the videomap(s). You do not need to create these particular sub-folders, as the code can attempt figure out what they are by themselves, these are purely for organization purposes and/or clarity.
 
 Finally, these individual .geojson files create an option in the menu to turn a layer/sector/area/procedure's visibility on or off. TRACON `sector` files have another feature that allows individual groups of geometries/polgons to be toggled. For example, within [`JFK_4s`](data/tracon/jfk/sectors/JFK_4s.json), the positions `2G, 2K, 2J, 2A, etc` can be individually toggled. <b>Changes to any position's visibility will be reflected in the URL</b>. 
 

@@ -41,7 +41,7 @@
       style="text-align:center; margin:0px 50px 0px 50px; border-radius:4px; padding:4px; font-weight:450; font-size:14px; color:var(--textcolor-dark)">
       Map Toggles</p>
     <div id="general-options" class="flex-center">
-      <button type="button" id="reset-layers"><i class="fa-solid fa-layer-group"></i> Layers</button>
+      <button type="button" id="reset-layers" style="background:rgb(253, 127, 127)"><i class="fa-solid fa-arrows-rotate"></i> Reset</button>
       <button type="button" id="toggle-markers"><i class="fa-solid fa-tag"></i> Labels</button>
       <button type="button" id="toggle-basemap"><i class="fa-solid fa-map"></i> Map</button>
       <button type="button" id="toggle-basemap"><i class="fa-solid fa-headset"></i> Callsign</button>
@@ -65,7 +65,6 @@
       <button class="category-filter" data-category="stars">STARs</button>
       <button class="category-filter" data-category="sids">SIDs</button>
       <button class="category-filter" data-category="videomap">Videomap</button>
-      <button id="reset-category-filter" style="background:#c06666; color:white;">Reset</button>
     </div>
     <div id="sidebar"></div>
   </div>
@@ -79,7 +78,7 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/esri-leaflet@3.0.9/dist/esri-leaflet.js"></script>
   <script src="https://unpkg.com/esri-leaflet-vector@4.0.2/dist/esri-leaflet-vector.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.js"></script>
   <script src="src/ui/smoothscroll.js"></script>
   <script src="src/config.js"></script>
   <script type="module" src="src/map.js"></script>
@@ -112,7 +111,7 @@
       <ul>
         <li><b>Map Toggles:</b></li>
         <ul>
-          <li><b>Layers:</b> Clears all layers & features from the map</li>
+          <li><b>Reset:</b> Clears all layers & features from the map</li>
           <li><b>Labels:</b> Toggles the visibility of labels on procedures</li>
           <li><b>Map:</b> Toggles the visibility of the basemap</li>
           <li><b>Callsigns:</b> Toggles the position name between identifier and callsign (N2K, ROBER)</li>
@@ -121,14 +120,15 @@
         <li><b>Map Layers:</b> Top right contains a selection of maps layers.</li>
         <li><b>Search:</b> Search for something. Will match to names of procedures (FQM3, JFK5), airports (JFK, EWR,
           LGA), configs (4s, 31s, D4L4/31), or sectors (Area A, N56)</li>
-        <li><b>Terminal / Enroute:</b> Switch between files for the TRACON or Enroute</li>
-        <li><b>Menu Bars:</b> Left side will contain options for toggling main files (sectors, procedures, videomaps).
-          Right menu will be enabled when airspace files are selected, allowing for toggling specific positions (N2G,
+        <li><b>Terminal / Enroute:</b> Switch between files for either TRACON or Enroute</li>
+        <li><b>Filters:</b> Toggling main files (sectors, procedures, videomaps).
+        <li><b>Selection dropdown(s):</b> Left side menu will contain main files. Right side menu will be enabled when airspace files are selected, allowing for toggling specific positions (N2G,
           N2K, N4P).</li>
         <li><b>URL Linking:</b> Any changes to features/layers on the map will generate a unqiue URL that can be
           reloaded to an exact configuration. For TRACON sector files, specific position configs are also included but
           not for ENROUTE files.</li>
       </ul>
+      <p>Documentation and code avaliable on the GitHub repo linked at the bottom of the page or: <a href='https://github.com/millionsouls/zny-airspace'>https://github.com/millionsouls/zny-airspace</a></p>
       <p style="color:red;">Not for real world navigation. This site is in no way affiliated with the FAA, New York
         TRACON or New York ARTCC, and no information found on this site should ever be used for real world flight
         planning, operation, air traffic control or air traffic management</p>
@@ -173,21 +173,6 @@
   });
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') helpModal.classList.add('hidden');
-  });
-
-  // Toggle the filter selections
-  const traconBtn = document.getElementById("btn-tracon");
-  const enrouteBtn = document.getElementById("btn-enroute");
-  const categoryFilters = document.getElementById("category-filters");
-  const resetFilterBtn = document.getElementById("reset-category-filter");
-
-  traconBtn.addEventListener("click", () => {
-    resetFilterBtn.click()
-    categoryFilters.style.display = "grid";
-  });
-  enrouteBtn.addEventListener("click", () => {
-    resetFilterBtn.click()
-    categoryFilters.style.display = "none";
   });
 </script>
 

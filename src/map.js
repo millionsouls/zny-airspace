@@ -5,7 +5,7 @@
  */
 
 import { GEOLAYERS } from './loader.js'
-import { updateURLFromMapState } from './url-handler.js';
+import { updateURLFromMap } from './url-handler.js';
 
 const CONFIG = {
   center: [40.703376, -74.015415],
@@ -127,7 +127,7 @@ document.getElementById('reset-layers').addEventListener('click', function () {
   const rightbar = document.getElementById("rightbar");
   rightbar.querySelectorAll(".rightbar-airport-group").forEach(group => group.remove());
 
-  updateURLFromMapState();
+  updateURLFromMap();
 });
 
 // Toggles visibility of procedure markers (label only)

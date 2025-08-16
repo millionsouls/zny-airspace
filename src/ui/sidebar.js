@@ -1,150 +1,146 @@
 /**
- * Dynamically creates a sidebar and autofills with options based on loaded .geojson files
+ * Dynamically creates sidebar options based on loaded .geojson files.
  */
 
-const categoryMap = {
+const CAT_LABELS = {
   sectors: "Sectors",
   stars: "STARs",
   sids: "SIDs",
   videomap: "Videomap"
 };
 
-function buildCheckbox(id, label, checked = false) {
-  const wrapper = document.createElement("div");
-  wrapper.innerHTML = `<input type="checkbox" id="${id}" ${checked ? 'checked' : ''}> <label for="${id}">${label}</label>`;
-  return wrapper;
+// Create a checkbox element
+function makeCheckbox(id, label, checked = false) {
+  const div = document.createElement("div");
+  div.innerHTML = `<input type="checkbox" id="${id}" ${checked ? 'checked' : ''}> <label for="${id}">${label}</label>`;
+  return div;
 }
 
-/**
- * Constructs the checkboxes
- * 
- * @param {*} map 
- * @param {*} positionLayers 
- * @param {*} fileId 
- * @param {*} airport 
- * @param {*} categoryLabel 
- * @param {*} name 
- * @param {*} updateURL 
- * @returns 
- */
-function buildToggle(map, positionLayers, fileId, airport, categoryLabel, name, updateURL) {
-  const container = document.createElement("div");
-  container.className = "rightbar-file";
-  container.id = fileId;
+// Build toggles for sector positions
+function makeSectorToggle(map, posLayers, fileId, apt, cat, name, updateURL) {
+  const cont = document.createElement("div");
+  cont.className = "rightbar-file";
+  cont.id = fileId;
 
   const header = document.createElement("div");
   header.innerText = name;
   header.style.fontWeight = "600";
-  container.appendChild(header);
+  cont.appendChild(header);
 
-  Object.entries(positionLayers).forEach(([positionName, layer]) => {
-    const posId = `toggle-${airport}${categoryLabel}${name}${positionName}`;
-    const checkboxDiv = buildCheckbox(posId, positionName, true);
-    checkboxDiv.className = "position-id-toggle";
-
-    checkboxDiv.querySelector("input").addEventListener("change", function () {
+  Object.entries(posLayers).forEach(([pos, layer]) => {
+    const posId = `toggle-${apt}${cat}${name}${pos}`;
+    const cbDiv = makeCheckbox(posId, pos, true);
+    cbDiv.className = "position-id-toggle";
+    cbDiv.querySelector("input").addEventListener("change", function () {
       this.checked ? map.addLayer(layer) : map.removeLayer(layer);
       updateURL();
     });
-
-    container.appendChild(checkboxDiv);
+    cont.appendChild(cbDiv);
   });
 
-  return container;
+  return cont;
+}
+
+// Position popup menu near trigger
+function positionPopupSidemenu(menu, trigger) {
+  const rect = trigger.getBoundingClientRect();
+  menu.style.display = "flex";
+  menu.style.visibility = "hidden";
+
+  const h = menu.offsetHeight;
+  menu.style.visibility = "";
+  menu.style.display = "flex";
+
+  const vh = window.innerHeight;
+
+  let top = rect.top;
+  
+  if (top + h > vh - 10) top = Math.max(10, vh - h - 10);
+  menu.style.top = `${top - 20}px`;
 }
 
 /**
- * Construct the sidebar containing options for toggling layers. This creates options for both tracon and enroute but hides enroute initally.
- * 
- * @param {*} GEODATA 
- * @param {*} GEOLAYERS 
- * @param {*} map 
- * @param {*} updateURL 
- * @param {*} activeDomain 
+ * Build sidebar with layer toggles for both tracon and enroute.
  */
 function buildSidebar(GEODATA, GEOLAYERS, map, updateURL, activeDomain = 'tracon') {
   const sidebar = document.getElementById("sidebar");
   sidebar.innerHTML = "";
 
   ['tracon', 'enroute'].forEach(domain => {
-    const domainWrapper = document.createElement("div");
-    domainWrapper.id = `sidebar-station-${domain}`;
-    domainWrapper.style.display = (domain === activeDomain) ? "block" : "none";
+    const domainDiv = document.createElement("div");
+    domainDiv.id = `sidebar-station-${domain}`;
+    domainDiv.style.display = (domain === activeDomain) ? "block" : "none";
 
-    Object.entries(GEODATA[domain] || {}).forEach(([airport, categories]) => {
-      const dropdown = document.createElement("div");
-      dropdown.className = "dropdown";
+    Object.entries(GEODATA[domain] || {}).forEach(([apt, cats]) => {
+      const dd = document.createElement("div");
+      dd.className = "dropdown";
 
-      const toggle = document.createElement("div");
-      toggle.className = "dropdown-toggle";
-      toggle.innerHTML = `<span>${airport}</span><i class="fa fa-caret-left"></i>`;
+      const ddToggle = document.createElement("div");
+      ddToggle.className = "dropdown-toggle";
+      ddToggle.innerHTML = `<span>${apt}</span><i class="fa fa-caret-left"></i>`;
 
-      const container = document.createElement("div");
-      container.className = "dropdown-container";
+      const ddCont = document.createElement("div");
+      ddCont.className = "dropdown-container";
 
-      Object.entries(categories).forEach(([category, items]) => {
-        let names = (category === 'sectors' && typeof items === 'object') ? Object.keys(items) : items;
-        if (!Array.isArray(names) || names.length === 0) return;
+      Object.entries(cats).forEach(([cat, items]) => {
+        let names = (cat === 'sectors' && typeof items === 'object') ? Object.keys(items) : items;
+        if (!Array.isArray(names) || !names.length) return;
         names = names.slice().sort((b, a) => b.localeCompare(a));
 
-        const displayName = categoryMap[category] || category;
-        const usePopup = names.length >= 5;
-        const targetContainer = usePopup ? document.createElement("div") : container;
+        const label = CAT_LABELS[cat] || cat;
+        const popup = names.length >= 5;
+        const tgt = popup ? document.createElement("div") : ddCont;
 
-        if (usePopup) {
-          targetContainer.className = "popup-sidemenu";
-          targetContainer.style.display = "none";
+        if (popup) {
+          tgt.className = "popup-sidemenu";
+          tgt.style.display = "none";
 
           const groupDiv = document.createElement("div");
           groupDiv.className = "sidemenu-toggle";
-          groupDiv.innerHTML = `<span>${displayName}</span><i class="fa fa-caret-right"></i>`;
+          groupDiv.innerHTML = `<span>${label}</span><i class="fa fa-caret-right"></i>`;
 
           groupDiv.addEventListener("click", e => {
             sidebar.querySelectorAll(".popup-sidemenu").forEach(p => {
-              if (p !== targetContainer) p.style.display = "none";
+              if (p !== tgt) p.style.display = "none";
             });
-            if (targetContainer.style.display === "none") {
-              positionPopupSidemenu(targetContainer, groupDiv);
-              targetContainer.style.display = "flex";
-            } else {
-              targetContainer.style.display = "none";
-            }
+            tgt.style.display = tgt.style.display === "none" ? "flex" : "none";
+            if (tgt.style.display === "flex") positionPopupSidemenu(tgt, groupDiv);
             e.stopPropagation();
           });
 
-          container.appendChild(groupDiv);
-          container.appendChild(targetContainer);
+          ddCont.appendChild(groupDiv);
+          ddCont.appendChild(tgt);
         } else {
-          const label = document.createElement("div");
-          label.style.fontWeight = "600";
-          label.style.marginTop = "6px";
-          label.innerHTML = displayName;
-          container.appendChild(label);
+          const lbl = document.createElement("div");
+          lbl.style.fontWeight = "600";
+          lbl.style.marginTop = "6px";
+          lbl.innerHTML = label;
+          ddCont.appendChild(lbl);
         }
 
         names.forEach(name => {
-          const checkboxId = `toggle-${airport}${category}${name}`;
-          const checkboxDiv = buildCheckbox(checkboxId, name);
-          targetContainer.appendChild(checkboxDiv);
+          const cbId = `toggle-${apt}${cat}${name}`;
+          const cbDiv = makeCheckbox(cbId, name);
+          tgt.appendChild(cbDiv);
 
-          const checkbox = checkboxDiv.querySelector("input");
-          const entry = GEOLAYERS[domain]?.[airport]?.[category]?.[name];
+          const cb = cbDiv.querySelector("input");
+          const entry = GEOLAYERS[domain]?.[apt]?.[cat]?.[name];
 
-          checkbox.addEventListener("change", function () {
+          cb.addEventListener("change", function () {
             if (!entry) return;
             const layers = (entry instanceof L.Layer || entry instanceof L.LayerGroup)
               ? [entry]
               : Object.values(entry);
-
             layers.forEach(layer => this.checked ? map.addLayer(layer) : map.removeLayer(layer));
             updateURL();
           });
 
-          if (category === 'sectors') {
-            checkbox.addEventListener("change", function () {
+          // Sectors: show position toggles in rightbar
+          if (cat === 'sectors') {
+            cb.addEventListener("change", function () {
               const rightbar = document.getElementById("rightbar");
-              const groupId = `rightbar-airport-${airport}`;
-              const fileId = `rightbar-file-${airport}-${name}`;
+              const groupId = `rightbar-airport-${apt}`;
+              const fileId = `rightbar-file-${apt}-${name}`;
 
               if (!this.checked) {
                 document.getElementById(fileId)?.remove();
@@ -162,154 +158,113 @@ function buildSidebar(GEODATA, GEOLAYERS, map, updateURL, activeDomain = 'tracon
 
                 const header = document.createElement("div");
                 header.className = "position-airport-header dropdown-toggle";
-                header.innerText = airport;
+                header.innerText = apt;
 
                 group.appendChild(header);
                 rightbar.appendChild(group);
               }
 
-              const fileContainer = buildToggle(map, entry, fileId, airport, category, name, updateURL);
-              group.appendChild(fileContainer);
+              const fileCont = makeSectorToggle(map, entry, fileId, apt, cat, name, updateURL);
+              group.appendChild(fileCont);
             });
           }
         });
       });
 
-      dropdown.appendChild(toggle);
-      dropdown.appendChild(container);
-      domainWrapper.appendChild(dropdown);
+      dd.appendChild(ddToggle);
+      dd.appendChild(ddCont);
+      domainDiv.appendChild(dd);
     });
     attachFilterListeners();
-
-    sidebar.appendChild(domainWrapper);
+    sidebar.appendChild(domainDiv);
   });
 }
 
 /**
- * Event handles when user clicks on a dropdown, expand and show the menu
- * @param {*} sidebar 
+ * Handles dropdown expand/collapse.
  */
 function attachSidebarListeners(sidebar) {
   sidebar.addEventListener("click", function (e) {
     const toggle = e.target.closest(".dropdown-toggle");
     if (toggle) {
-      const container = toggle.nextElementSibling;
-      if (container?.classList.contains("dropdown-container")) {
-        const isOpen = container.style.display === "block";
-        container.style.display = isOpen ? "none" : "block";
-        toggle.classList.toggle("open", !isOpen);
+      const cont = toggle.nextElementSibling;
+      if (cont?.classList.contains("dropdown-container")) {
+        const open = cont.style.display === "block";
+        cont.style.display = open ? "none" : "block";
+        toggle.classList.toggle("open", !open);
       }
       e.stopPropagation();
     }
   });
 }
 
-function filterCategory(categoryKey) {
-  const displayLabel = categoryMap[categoryKey].toLowerCase();
+// Filter sidebar by category
+function filterCategory(catKey) {
+  const label = CAT_LABELS[catKey].toLowerCase();
 
-  document.querySelectorAll("#sidebar .dropdown").forEach(dropdown => {
-    const toggle = dropdown.querySelector(".dropdown-toggle");
-    const container = dropdown.querySelector(".dropdown-container");
+  document.querySelectorAll("#sidebar .dropdown").forEach(dd => {
+    const toggle = dd.querySelector(".dropdown-toggle");
+    const cont = dd.querySelector(".dropdown-container");
+    let found = false;
 
-    let foundMatchingItems = false;
-
-    Array.from(container.children).forEach(child => {
+    Array.from(cont.children).forEach(child => {
       if (child.tagName === "DIV" && child.style.fontWeight === "600") {
         child.style.display = "none";
-        return; // skip further checks for this element
+        return;
       }
-
       if (child.classList.contains("popup-sidemenu")) {
-        // Show popup container only if matches filter
-        const matchesCategory = child.previousSibling?.textContent?.toLowerCase().includes(displayLabel);
-        child.style.display = matchesCategory ? "flex" : "none";
-        if (matchesCategory) foundMatchingItems = true;
+        const match = child.previousSibling?.textContent?.toLowerCase().includes(label);
+        child.style.display = match ? "flex" : "none";
+        if (match) found = true;
         return;
       }
-
       if (child.classList.contains("sidemenu-toggle")) {
-        const matchesCategory = child.textContent.toLowerCase().includes(displayLabel);
-        child.style.display = matchesCategory ? "" : "none";
+        const match = child.textContent.toLowerCase().includes(label);
+        child.style.display = match ? "" : "none";
         return;
       }
-
       if (child.querySelector) {
-        const checkbox = child.querySelector("input[type=checkbox]");
-        if (checkbox) {
-          // Check if checkbox id contains categoryKey (like "sectors", "stars", etc)
-          const belongsToCategory = checkbox.id.toLowerCase().includes(categoryKey.toLowerCase());
-          if (belongsToCategory) {
-            child.style.display = "";
-            foundMatchingItems = true;
-          } else {
-            child.style.display = "none";
-          }
+        const cb = child.querySelector("input[type=checkbox]");
+        if (cb) {
+          const belongs = cb.id.toLowerCase().includes(catKey.toLowerCase());
+          child.style.display = belongs ? "" : "none";
+          if (belongs) found = true;
         }
       }
     });
 
-    // Show or hide entire dropdown and container depending on matches found
-    if (foundMatchingItems) {
-      dropdown.style.display = "block";
-      container.style.display = "block";
-      toggle.classList.add("open");
-    } else {
-      dropdown.style.display = "none";
-      container.style.display = "none";
-      toggle.classList.remove("open");
-    }
+    dd.style.display = found ? "block" : "none";
+    cont.style.display = found ? "block" : "none";
+    toggle.classList.toggle("open", found);
   });
 }
 
-
+// Attach listeners for category filter buttons
 function attachFilterListeners() {
+  let activeFilter = null;
   document.querySelectorAll(".category-filter").forEach(btn => {
     btn.addEventListener("click", () => {
-      const category = btn.dataset.category;
-      filterCategory(category);
+      const cat = btn.dataset.category;
+      if (activeFilter === cat) {
+        resetCategoryFilter();
+        activeFilter = null;
+      } else {
+        filterCategory(cat);
+        activeFilter = cat;
+      }
     });
-  });
-
-  document.getElementById("reset-category-filter").addEventListener("click", () => {
-    resetCategoryFilter();
   });
 }
 
+// Reset all category filters
 function resetCategoryFilter() {
-  document.querySelectorAll("#sidebar .dropdown").forEach(dropdown => {
-    dropdown.style.display = "block";
-    const container = dropdown.querySelector(".dropdown-container");
-    container.style.display = "none";
-    dropdown.querySelector(".dropdown-toggle")?.classList.remove("open");
-
-    // Show all sub-sections inside dropdown
-    container.querySelectorAll(":scope > div").forEach(group => {
-      group.style.display = "";
-    });
+  document.querySelectorAll("#sidebar .dropdown").forEach(dd => {
+    dd.style.display = "block";
+    const cont = dd.querySelector(".dropdown-container");
+    cont.style.display = "none";
+    dd.querySelector(".dropdown-toggle")?.classList.remove("open");
+    cont.querySelectorAll(":scope > div").forEach(grp => { grp.style.display = ""; });
   });
 }
 
-function positionPopupSidemenu(popupMenu, triggerElement) {
-  // Get trigger position
-  const triggerRect = triggerElement.getBoundingClientRect();
-  // Show menu offscreen to measure height
-  popupMenu.style.display = "block";
-  popupMenu.style.visibility = "hidden";
-  const menuHeight = popupMenu.offsetHeight;
-  popupMenu.style.visibility = "";
-  popupMenu.style.display = "none";
-
-  // Calculate available space
-  const viewportHeight = window.innerHeight;
-  let top = triggerRect.top;
-
-  // If menu would overflow, move it up so it fits with 10px margin
-  if (top + menuHeight > viewportHeight - 10) {
-    top = Math.max(10, viewportHeight - menuHeight - 10);
-  }
-
-  popupMenu.style.top = `${top - 20}px`;
-}
-
-//# sourceMappingURL=sidebar.js.map
 export { buildSidebar, attachSidebarListeners };
