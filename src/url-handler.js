@@ -1,23 +1,15 @@
 /**
- * Generates and loads custom URL links to defined layer/feature settings
- * 
+ * Handles encoding/decoding of layer settings in the URL for map state sharing
  */
 
-const categoryAbbr = {
-  sectors: 1,
-  stars: 2,
-  sids: 3,
-  videomap: 4,
-};
-const categoryAbbrReverse = {
-  1: 'sectors',
-  2: 'stars',
-  3: 'sids',
-  4: 'videomap'
-};
-const includePositions = true;
+// Category abbreviations for encoding
+const CAT_ABBR = { sectors: 1, stars: 2, sids: 3, videomap: 4 };
+const CAT_ABBR_REV = { 1: 'sectors', 2: 'stars', 3: 'sids', 4: 'videomap' };
+const INCLUDE_POS = true;
 
-
+/**
+ * Utility functions for encoding/decoding and compression
+ */
 function encBase64(str) {
   return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
@@ -34,151 +26,107 @@ function decompress(str) {
 }
 
 /**
- * Transforms dictionary into custom encoded string, then is base64'ed.
- * ex: tracon::ABE;1:ABE-D||enroute::AREA-A;1:N56
- *                          
- * @param {*} layersNested 
- * @returns 
+ * Encodes layer data into a compact string for URL usage
+ * @param {Object} stationLayers - Layer data for a station
+ * @returns {string} - Encoded string
  */
-function encodeLayers(stationData) {
-  const domainStrings = [];
+function encodeLayers(stationLayers) {
+  const airports = [];
+  const [[station, data]] = Object.entries(stationLayers);
 
-  Object.entries(stationData).forEach(([station, data]) => {
-    const airportStrings = [];
+  Object.entries(data).forEach(([apt, cats]) => {
+    const catStrs = [];
+    for (const cat in cats) {
+      const abbr = CAT_ABBR[cat];
+      if (!abbr) continue;
+      const layers = cats[cat];
+      if (!layers) continue;
 
-    Object.entries(data).forEach(([airport, categories]) => {
-      const catStrings = [];
-
-      for (const cat in categories) {
-        const abbr = categoryAbbr[cat];
-        if (!abbr) continue;
-        const layers = categories[cat];
-        if (!layers) continue;
-
-        if (cat === 'sectors' && typeof layers === 'object' && !Array.isArray(layers)) {
-          const sectorStrings = [];
-
-          Object.entries(layers).forEach(([filename, positions]) => {
-            // For enroute, only encode the filename if any positions are active
-            if (station === 'enroute') {
-              if (positions && positions.length > 0) {
-                sectorStrings.push(filename);
-              }
-              return;
-            }
-
-            if (!positions || positions.length === 0) {
-              if (!includePositions) {
-                sectorStrings.push(filename);
-              }
-              return;
-            }
-
-            if (includePositions) {
-              const suffixes = positions.map(p => p.slice(-1)).join(',');
-              sectorStrings.push(`${filename}-${suffixes}`);
-            } else {
-              sectorStrings.push(filename);
-            }
-          });
-
-          if (sectorStrings.length > 0) {
-            catStrings.push(`${abbr}:${sectorStrings.join('|')}`);
+      // Handle sectors (special case for positions)
+      if (cat === 'sectors' && typeof layers === 'object' && !Array.isArray(layers)) {
+        const sectorStrs = [];
+        Object.entries(layers).forEach(([file, pos]) => {
+          if (station === 'enroute') {
+            if (pos && pos.length > 0) sectorStrs.push(file);
+            return;
           }
-        } else if (Array.isArray(layers)) {
-          if (layers.length > 0) {
-            catStrings.push(`${abbr}:${layers.join(',')}`);
+          if (!pos || pos.length === 0) {
+            if (!INCLUDE_POS) sectorStrs.push(file);
+            return;
           }
-        }
+          if (INCLUDE_POS) {
+            const suffix = pos.map(p => p.slice(-1)).join(',');
+            sectorStrs.push(`${file}-${suffix}`);
+          } else {
+            sectorStrs.push(file);
+          }
+        });
+        if (sectorStrs.length) catStrs.push(`${abbr}:${sectorStrs.join('|')}`);
+      } else if (Array.isArray(layers) && layers.length) {
+        catStrs.push(`${abbr}:${layers.join(',')}`);
       }
-
-      if (catStrings.length === 0) return;
-      airportStrings.push(`${airport};${catStrings.join(';')}`);
-    });
-
-    if (airportStrings.length === 0) return;
-    domainStrings.push(`${station}::${airportStrings.join('|')}`);
+    }
+    if (catStrs.length) airports.push(`${apt};${catStrs.join(';')}`);
   });
 
-  const compactStr = domainStrings.join('||');
-  return compress(compactStr);
+  if (!airports.length) return "";
+  return compress(airports.join('||'));
 }
 
 /**
- * Decode string into readable dictionary
- * 
- * @param {*} param 
- * @returns 
+ * Decodes layer data from a compact URL string
+ * @param {string} encoded - Encoded string from URL
+ * @param {string} station - Station type ('enroute' or 'tracon')
+ * @returns {Object} - Decoded layer data
  */
-function decodeLayers(encoded, GEOLAYERS) {
+function decodeLayers(encoded, station) {
   if (!encoded) return {};
-  console.log("url sees: ", encoded)
   try {
     const decoded = decompress(encoded);
-    const domainParts = decoded.split('||');
+    const airports = decoded.split('||').filter(Boolean);
     const result = {};
 
-    domainParts.forEach(domainPart => {
-      const [station, airportsRaw] = domainPart.split('::');
-      if (!station || !airportsRaw) return;
+    console.log(result)
 
-      result[station] = {};
+    airports.forEach(aptStr => {
+      const parts = aptStr.split(';');
+      const apt = parts[0];
+      if (!apt) return;
+      result[apt] = {};
 
-      const airportsArr = airportsRaw.split('|');
-      airportsArr.forEach(airportStr => {
-        const parts = airportStr.split(';');
-        const airport = parts[0];
-        if (!airport) return;
+      parts.slice(1).forEach(catPart => {
+        const [abbr, ...layerParts] = catPart.split(':');
+        const layerStr = layerParts.join(':');
+        if (!abbr || !layerStr) return;
+        const cat = CAT_ABBR_REV[abbr];
+        if (!cat) return;
 
-        result[station][airport] = {};
-
-        parts.slice(1).forEach(catPart => {
-          const [catAbbr, ...layerParts] = catPart.split(':');
-          const layerStr = layerParts.join(':');
-          if (!catAbbr || !layerStr) return;
-
-          const cat = categoryAbbrReverse[catAbbr];
-          if (!cat) return;
-
-          if (cat === 'sectors') {
-            if (station === 'enroute') {
-              // ENROUTE: just an array of filenames
-              const filenames = layerStr.split('|').filter(Boolean);
-              if (filenames.length > 0) {
-                result[station][airport][cat] = filenames;
-              }
-              return;
-            }
-
-            // TRACON: seperate out position names
-            const sectorObj = {};
-            const entries = layerStr.split('|');
-
-            entries.forEach(entry => {
-              const [filename, suffixStr] = entry.split('-');
-              if (!filename) return;
-
-              if (!suffixStr) {
-                sectorObj[filename] = [];
-              } else {
-                const suffixes = suffixStr.split(',').filter(Boolean);
-                sectorObj[filename] = suffixes;
-              }
-            });
-
-            if (Object.keys(sectorObj).length > 0) {
-              result[station][airport][cat] = sectorObj;
-            }
-          } else if (['sids', 'stars', 'videomap'].includes(cat)) {
-            const items = layerStr.split(',').filter(Boolean);
-            if (items.length > 0) {
-              result[station][airport][cat] = items;
-            }
+        if (cat === 'sectors') {
+          if (station === 'enroute') {
+            const files = layerStr.split('|').filter(Boolean);
+            if (files.length) result[apt][cat] = files;
+            return;
           }
-        });
+
+          // TRACON: handle positions
+          const sectorObj = {};
+          layerStr.split('|').forEach(entry => {
+            const dashIdx = entry.lastIndexOf('-');
+            if (dashIdx === -1) {
+              sectorObj[entry] = [];
+            } else {
+              const file = entry.slice(0, dashIdx);
+              const suffixes = entry.slice(dashIdx + 1).split(',').filter(Boolean);
+              sectorObj[file] = suffixes;
+            }
+          });
+          if (Object.keys(sectorObj).length) result[apt][cat] = sectorObj;
+        } else if (['sids', 'stars', 'videomap'].includes(cat)) {
+          const items = layerStr.split(',').filter(Boolean);
+          if (items.length) result[apt][cat] = items;
+        }
       });
     });
-    console.log("url out: ", result)
     return result;
   } catch (err) {
     console.error('URL Decode error:', err);
@@ -187,35 +135,41 @@ function decodeLayers(encoded, GEOLAYERS) {
 }
 
 /**
- * Extract URL on page load and decode it
- * 
- * @returns 
+ * Reads enabled layers from the URL parameters
+ * @returns {Object} - Enabled layers by station
  */
-function getEnabledLayersFromURL(GEOLAYERS) {
+function getLayersFromURL() {
   const params = new URLSearchParams(window.location.search);
-  const layerParam = params.get("l");
+  const enrouteParam = params.get("e");
+  const traconParam = params.get("t");
+  const result = {};
 
-  if (!layerParam) return {};
-
-  return decodeLayers(layerParam, GEOLAYERS);
+  if (enrouteParam) result.enroute = decodeLayers(enrouteParam, 'enroute');
+  if (traconParam) result.tracon = decodeLayers(traconParam, 'tracon');
+  return result;
 }
 
 /**
- * Detects map state changes and reflects them in the URL
- * 
- * @returns 
+ * Updates the URL to reflect the current map state
  */
-function updateURLFromMapState() {
+function updateURLFromMap() {
   if (!window.LayerControl) return;
-  const enabled = window.LayerControl.getActiveLayers()
+  const active = window.LayerControl.getActive();
   const url = new URL(window.location);
 
-  if (Object.keys(enabled).length > 0) {
-    url.searchParams.set("l", encodeLayers(enabled));
+  if (active.enroute && Object.keys(active.enroute).length) {
+    url.searchParams.set("e", encodeLayers({ enroute: active.enroute }));
   } else {
-    url.searchParams.delete("l");
+    url.searchParams.delete("e");
   }
+
+  if (active.tracon && Object.keys(active.tracon).length) {
+    url.searchParams.set("t", encodeLayers({ tracon: active.tracon }));
+  } else {
+    url.searchParams.delete("t");
+  }
+
   history.replaceState(null, "", url);
 }
 
-export { getEnabledLayersFromURL, updateURLFromMapState };
+export { getLayersFromURL, updateURLFromMap };

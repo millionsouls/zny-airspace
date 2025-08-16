@@ -6,7 +6,7 @@ import { loadGeoFiles, GEODATA, GEOLAYERS } from './loader.js';
 import { map } from './map.js';
 import { buildSidebar, attachSidebarListeners } from './ui/sidebar.js';
 import { setupSearch } from './ui/search.js';
-import { getEnabledLayersFromURL, updateURLFromMapState } from './url-handler.js';
+import { getLayersFromURL, updateURLFromMap } from './url-handler.js';
 
 let ACTIVE_STATION = 'tracon';
 
@@ -32,139 +32,6 @@ function deactivateLayer(layer) {
   if (layer && map.hasLayer(layer)) map.removeLayer(layer);
 }
 
-/**
- * Captures all the changes made by the user from toggling layers. Mainly used to update and load the URL string.
- */
-window.LayerControl = {
-  getActiveLayers() {
-    const result = {};
-
-    for (const [station, airports] of Object.entries(GEOLAYERS)) {
-      result[station] = {};
-
-      for (const [airport, categories] of Object.entries(airports)) {
-        result[station][airport] = {};
-
-        for (const [category, files] of Object.entries(categories)) {
-          if (category === 'sectors') {
-            const activeSectors = {};
-
-            for (const [filename, positions] of Object.entries(files)) {
-              const activePos = Object.entries(positions)
-                .filter(([_, layer]) => map.hasLayer(layer))
-                .map(([pos]) => pos);
-
-              if (activePos.length > 0) {
-                activeSectors[filename] = activePos;
-              }
-            }
-
-            if (Object.keys(activeSectors).length > 0) {
-              result[station][airport][category] = activeSectors;
-            }
-
-          } else {
-            const activeLayers = Object.entries(files)
-              .filter(([_, layer]) => map.hasLayer(layer))
-              .map(([name]) => name);
-
-            if (activeLayers.length > 0) {
-              result[station][airport][category] = activeLayers;
-            }
-          }
-        }
-      }
-    }
-
-    return result;
-  },
-
-  setActiveLayers(decoded) {
-    for (const [station, airports] of Object.entries(decoded)) {
-      for (const [airport, categories] of Object.entries(airports)) {
-        for (const [category, value] of Object.entries(categories)) {
-          if (category === 'sectors') {
-            if (station === 'enroute' && Array.isArray(value)) {
-              // Enroute sectors - list of filenames
-              value.forEach(filename => {
-                const posLayers = getLayer(station, airport, category, filename);
-                if (!posLayers) return;
-
-                for (const [posName, layer] of Object.entries(posLayers)) {
-                  activateLayer(layer);
-                  toggleCheckbox(`toggle-${airport}sectors${filename}${posName}`);
-                }
-
-                toggleCheckbox(`toggle-${airport}sectors${filename}`);
-              });
-
-            } else {
-              // Tracon sectors - object of filename -> positions
-              for (const [filename, activePositions] of Object.entries(value)) {
-                const posLayers = getLayer(station, airport, category, filename);
-                if (!posLayers) continue;
-
-                const allPositions = Object.keys(posLayers);
-
-                let toActivate = [];
-                if (Array.isArray(activePositions) && activePositions.length > 0) {
-                  const isFullNames = activePositions.every(pos => allPositions.includes(pos));
-                  if (isFullNames) {
-                    toActivate = activePositions;
-                  } else {
-                    // If activePositions are suffixes, match them
-                    toActivate = allPositions.filter(posName =>
-                      activePositions.some(suffix => posName.endsWith(suffix))
-                    );
-                  }
-                } else {
-                  toActivate = [];
-                }
-
-                // 1. Ensure the main sector file checkbox is checked if any positions are to be activated
-                const mainCheckboxId = `toggle-${airport}sectors${filename}`;
-                const mainCheckbox = document.getElementById(mainCheckboxId);
-                if (mainCheckbox && !mainCheckbox.checked && toActivate.length > 0) {
-                  mainCheckbox.checked = true;
-                  mainCheckbox.dispatchEvent(new Event('change'));
-                }
-
-                // 2. Activate/deactivate only the intended positions
-                for (const [posName, layer] of Object.entries(posLayers)) {
-                  if (toActivate.includes(posName)) {
-                    activateLayer(layer);
-                  } else {
-                    deactivateLayer(layer);
-                  }
-                  toggleCheckbox(`toggle-${airport}sectors${filename}${posName}`, toActivate.includes(posName));
-                }
-
-                // 3. If no positions are to be activated, uncheck the main sector file checkbox
-                if (mainCheckbox && toActivate.length === 0) {
-                  mainCheckbox.checked = false;
-                  mainCheckbox.dispatchEvent(new Event('change'));
-                }
-              }
-            }
-          } else {
-            // Regular layers (like boundaries, fixes, etc.)
-            value.forEach(name => {
-              const layer = getLayer(station, airport, category, name);
-              if (layer) {
-                activateLayer(layer);
-                toggleCheckbox(`toggle-${airport}${category}${name}`);
-              }
-            });
-          }
-        }
-      }
-    }
-
-    console.log("set: ", decoded)
-    updateURLFromMapState();
-  }
-};
-
 // Switching between terminal and enroute selections
 function switchDomain(newDomain) {
   ACTIVE_STATION = newDomain;
@@ -173,8 +40,113 @@ function switchDomain(newDomain) {
     div.style.display = (div.id === `sidebar-station-${ACTIVE_STATION}`) ? "block" : "none";
   });
   
-  updateURLFromMapState();
+  updateURLFromMap();
 }
+
+/**
+ * LayerControl: Tracks active layers and syncs with URL.
+ */
+window.LayerControl = {
+  /**
+   * Returns currently active layers by station/airport/category.
+   */
+  getActive() {
+    const active = {};
+
+    for (const [station, airports] of Object.entries(GEOLAYERS)) {
+      active[station] = {};
+
+      for (const [apt, cats] of Object.entries(airports)) {
+        active[station][apt] = {};
+
+        for (const [cat, files] of Object.entries(cats)) {
+          if (cat === 'sectors') {
+            // Sectors: collect active positions per file
+            const actSec = {};
+            for (const [file, posObj] of Object.entries(files)) {
+              const actPos = Object.entries(posObj)
+                .filter(([_, lyr]) => map.hasLayer(lyr))
+                .map(([pos]) => pos);
+              if (actPos.length) actSec[file] = actPos;
+            }
+            if (Object.keys(actSec).length) active[station][apt][cat] = actSec;
+          } else {
+            // Other categories: collect active layer names
+            const actNames = Object.entries(files)
+              .filter(([_, lyr]) => map.hasLayer(lyr))
+              .map(([name]) => name);
+            if (actNames.length) active[station][apt][cat] = actNames;
+          }
+        }
+      }
+    }
+    return active;
+  },
+
+  /**
+   * Activates layers based on decoded state object.
+   * Syncs checkboxes and map layers.
+   */
+  setActive(decoded) {
+    for (const [station, airports] of Object.entries(decoded)) {
+      for (const [apt, cats] of Object.entries(airports)) {
+        for (const [cat, val] of Object.entries(cats)) {
+          if (cat === 'sectors') {
+            if (station === 'enroute' && Array.isArray(val)) {
+              // Enroute: activate all positions for each sector file
+              val.forEach(file => {
+                const posObj = getLayer(station, apt, cat, file);
+                if (!posObj) return;
+                Object.entries(posObj).forEach(([pos, lyr]) => {
+                  activateLayer(lyr);
+                  toggleCheckbox(`toggle-${apt}sectors${file}${pos}`);
+                });
+                toggleCheckbox(`toggle-${apt}sectors${file}`);
+              });
+            } else {
+              // Tracon: activate specific positions per sector file
+              for (const [file, actPos] of Object.entries(val)) {
+                const posObj = getLayer(station, apt, cat, file);
+                if (!posObj) continue;
+                const allPos = Object.keys(posObj);
+                let toAct = [];
+                if (Array.isArray(actPos) && actPos.length) {
+                  // If actPos are suffixes, match them
+                  toAct = actPos.every(p => allPos.includes(p))
+                    ? actPos
+                    : allPos.filter(p => actPos.some(sfx => p.endsWith(sfx)));
+                }
+                // Main sector checkbox
+                const mainId = `toggle-${apt}sectors${file}`;
+                const mainCb = document.getElementById(mainId);
+                if (mainCb) {
+                  mainCb.checked = !!toAct.length;
+                  mainCb.dispatchEvent(new Event('change'));
+                }
+                // Activate/deactivate positions
+                Object.entries(posObj).forEach(([pos, lyr]) => {
+                  if (toAct.includes(pos)) activateLayer(lyr);
+                  else deactivateLayer(lyr);
+                  toggleCheckbox(`toggle-${apt}sectors${file}${pos}`, toAct.includes(pos));
+                });
+              }
+            }
+          } else {
+            // Other categories: activate layers by name
+            val.forEach(name => {
+              const lyr = getLayer(station, apt, cat, name);
+              if (lyr) {
+                activateLayer(lyr);
+                toggleCheckbox(`toggle-${apt}${cat}${name}`);
+              }
+            });
+          }
+        }
+      }
+    }
+    updateURLFromMap();
+  }
+};
 
 // Initialize
 fetch('data/file-index.json')
@@ -184,13 +156,13 @@ fetch('data/file-index.json')
   })
   .then(geoFiles => loadGeoFiles(geoFiles, map))
   .then(() => {
-    buildSidebar(GEODATA, GEOLAYERS, map, updateURLFromMapState, ACTIVE_STATION);
+    buildSidebar(GEODATA, GEOLAYERS, map, updateURLFromMap, ACTIVE_STATION);
     attachSidebarListeners(document.getElementById("sidebar"));
-    setupSearch(GEODATA, GEOLAYERS, map, updateURLFromMapState);
+    setupSearch(GEODATA, GEOLAYERS, map, updateURLFromMap);
 
-    const enabled = getEnabledLayersFromURL();
+    const enabled = getLayersFromURL();
     if (enabled) {
-      window.LayerControl.setActiveLayers(enabled);
+      window.LayerControl.setActive(enabled);
     }
 
     document.getElementById("btn-tracon").addEventListener("click", () => switchDomain("tracon"));
