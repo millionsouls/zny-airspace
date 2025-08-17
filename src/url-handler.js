@@ -44,19 +44,27 @@ function encodeLayers(stationLayers) {
 
       // Handle sectors (special case for positions)
       if (cat === 'sectors' && typeof layers === 'object' && !Array.isArray(layers)) {
-  const sectorStrs = [];
-  Object.entries(layers).forEach(([file, pos]) => {
-    if (!pos || pos.length === 0) {
-      sectorStrs.push(file);
-      return;
-    }
-    // store positions for both TRACON and ENROUTE
-    const suffix = pos.join(',');
-    sectorStrs.push(`${file}-${suffix}`);
-  });
-  if (sectorStrs.length) catStrs.push(`${abbr}:${sectorStrs.join('|')}`);
-}
-
+        const sectorStrs = [];
+        Object.entries(layers).forEach(([file, pos]) => {
+          if (station === 'enroute') {
+            if (pos && pos.length > 0) sectorStrs.push(file);
+            return;
+          }
+          if (!pos || pos.length === 0) {
+            if (!INCLUDE_POS) sectorStrs.push(file);
+            return;
+          }
+          if (INCLUDE_POS) {
+            const suffix = pos.map(p => p.slice(-1)).join(',');
+            sectorStrs.push(`${file}-${suffix}`);
+          } else {
+            sectorStrs.push(file);
+          }
+        });
+        if (sectorStrs.length) catStrs.push(`${abbr}:${sectorStrs.join('|')}`);
+      } else if (Array.isArray(layers) && layers.length) {
+        catStrs.push(`${abbr}:${layers.join(',')}`);
+      }
     }
     if (catStrs.length) airports.push(`${apt};${catStrs.join(';')}`);
   });
@@ -94,20 +102,29 @@ function decodeLayers(encoded, station) {
         if (!cat) return;
 
         if (cat === 'sectors') {
-  const sectorObj = {};
-  layerStr.split('|').forEach(entry => {
-    const dashIdx = entry.lastIndexOf('-');
-    if (dashIdx === -1) {
-      sectorObj[entry] = []; // no positions
-    } else {
-      const file = entry.slice(0, dashIdx);
-      const positions = entry.slice(dashIdx + 1).split(',').filter(Boolean);
-      sectorObj[file] = positions;
-    }
-  });
-  if (Object.keys(sectorObj).length) result[apt][cat] = sectorObj;
-}
+          if (station === 'enroute') {
+            const files = layerStr.split('|').filter(Boolean);
+            if (files.length) result[apt][cat] = files;
+            return;
+          }
 
+          // TRACON: handle positions
+          const sectorObj = {};
+          layerStr.split('|').forEach(entry => {
+            const dashIdx = entry.lastIndexOf('-');
+            if (dashIdx === -1) {
+              sectorObj[entry] = [];
+            } else {
+              const file = entry.slice(0, dashIdx);
+              const suffixes = entry.slice(dashIdx + 1).split(',').filter(Boolean);
+              sectorObj[file] = suffixes;
+            }
+          });
+          if (Object.keys(sectorObj).length) result[apt][cat] = sectorObj;
+        } else if (['sids', 'stars', 'videomap'].includes(cat)) {
+          const items = layerStr.split(',').filter(Boolean);
+          if (items.length) result[apt][cat] = items;
+        }
       });
     });
     return result;

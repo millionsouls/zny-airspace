@@ -61,11 +61,3 @@ button:active {
 svg {
   overflow: visible;
 }
-
-@keyframes spin-once {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(180deg); }
-}
-.spin-once {
-  animation: spin-once 0.3s linear;
-}

@@ -49,11 +49,6 @@ L.control.scale({ position: 'bottomright' }).addTo(map);
 L.control.layers(baseLayers, null, { position: 'topright', collapsed: false }).addTo(map);
 L.control.zoom({ position: 'topright' }).addTo(map);
 
-const mapToggle = document.getElementById('toggle-basemap');
-const resetToggle = document.getElementById('reset-layers');
-const markerToggle = document.getElementById('toggle-markers');
-const darkToggle = document.getElementById('toggle-darkmode');
-
 // Delay DOM restructuring to ensure controls exist
 setTimeout(() => {
   const mapContainer = document.querySelector('.leaflet-top.leaflet-right');
@@ -74,14 +69,12 @@ setTimeout(() => {
 }, 0);
 
 // Toggles visibility of OSM map
-mapToggle.addEventListener('click', function () {
+document.getElementById('toggle-basemap').addEventListener('click', function () {
   basemapVisible = !basemapVisible;
 
   if (basemapVisible) {
     map.addLayer(currentLayer);
-    mapToggle.innerHTML = '<i class="fa-solid fa-map"></i> Map';
   } else {
-    mapToggle.innerHTML= '<i class="fa-regular fa-map"></i> Map';
     Object.values(baseLayers).forEach(layer => {
       if (map.hasLayer(layer)) map.removeLayer(layer);
     });
@@ -89,17 +82,7 @@ mapToggle.addEventListener('click', function () {
 });
 
 // Resets all toggled map layers/features to off
-resetToggle.addEventListener('click', function () {
-  // do a barrel roll
-  const icon = resetToggle.querySelector('i');
-  icon.classList.remove('spin-once');
-  void icon.offsetWidth;
-  icon.classList.add('spin-once');
-  icon.addEventListener('animationend', function handler() {
-    icon.classList.remove('spin-once');
-    icon.removeEventListener('animationend', handler);
-  });
-
+document.getElementById('reset-layers').addEventListener('click', function () {
   Object.entries(GEOLAYERS).forEach(([station, airports]) => {
     Object.entries(airports).forEach(([airport, categoryObj]) => {
       Object.entries(categoryObj).forEach(([category, subCategoryObj]) => {
@@ -148,7 +131,7 @@ resetToggle.addEventListener('click', function () {
 });
 
 // Toggles visibility of procedure markers (label only)
-markerToggle.addEventListener('click', function () {
+document.getElementById('toggle-markers').addEventListener('click', function () {
   const icons = document.querySelectorAll('.procedure-label');
   let anyVisible = Array.from(icons).some(el => el.style.display !== 'none');
 
@@ -159,7 +142,7 @@ markerToggle.addEventListener('click', function () {
   this.classList.toggle('off', anyVisible);
 });
 
-darkToggle.addEventListener('click', function () {
+document.getElementById('toggle-darkmode').addEventListener('click', function () {
   document.documentElement.classList.toggle('dark-mode')
 
   if (document.documentElement.classList.contains('dark-mode')) {
