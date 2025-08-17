@@ -47,6 +47,7 @@ function hexToRGBA(hex, alpha = 0.8) {
 
 /**
  * Construct and format the data for a layer/combine all layers of same position
+ * 
  */
 function buildFeatureInfoHTML(features) {
   const grouped = {};
@@ -88,11 +89,15 @@ function buildFeatureInfoHTML(features) {
       .filter(Boolean)
       .join('');
 
+    const firstProps = feats[0].properties || {};
+    const displayLabel = (window.LABEL_MODE === 'sector')
+      ? (firstProps.Sector ?? firstProps.sector ?? pos)
+      : (pos || firstProps.Sector || firstProps.sector || '');
 
     const html = `
       <div class="feature-info-row" style="background:${color}; color:${textColor};">
         <div class="feature-info-header">
-          <div class="feature-info-pos">${pos}</div>
+          <div class="feature-info-pos">${displayLabel}</div>
           <div class="feature-info-altitudes">
             ${altRows.map(row => `
               <div class="feature-info-alt-row">
@@ -203,7 +208,6 @@ function handleFeatureHover(feature, layer) {
       }
       return;
     }
-
 
     if (isPolygon) {
       const featuresAtPoint = [];

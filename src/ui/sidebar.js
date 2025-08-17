@@ -9,6 +9,8 @@ const CAT_LABELS = {
   videomap: "Videomap"
 };
 
+window.refreshRightbarLabels = refreshRightbarLabels;
+
 // Create a checkbox element
 function makeCheckbox(id, label, checked = false) {
   const div = document.createElement("div");
@@ -16,7 +18,41 @@ function makeCheckbox(id, label, checked = false) {
   return div;
 }
 
-// Build toggles for sector positions
+/**
+ * Crawl a Leaflet layer (which may be a group) and return the first feature.properties we find.
+ */
+function findAnyFeatureProps(layer) {
+  let props = null;
+  const visit = (lyr) => {
+    if (props) return;
+    if (lyr && lyr.feature && lyr.feature.properties) {
+      props = lyr.feature.properties;
+      return;
+    }
+    if (typeof lyr.eachLayer === "function") {
+      lyr.eachLayer(visit);
+    }
+  };
+  visit(layer);
+  return props || {};
+}
+
+/**
+ * Given a position-key and its layer, compute the two label variants:
+ * - posLabel: Position (from the key or the feature)
+ * - sectorLabel: Sector (from feature props; fallback to posLabel)
+ */
+function computeLabelsForPosition(posKey, layerForPos) {
+  const props = findAnyFeatureProps(layerForPos);
+  const posLabel = posKey || props.Position || props.position || "";
+  const sectorLabel = props.Sector || props.sector || posLabel;
+  return { posLabel, sectorLabel };
+}
+
+/**
+ * Build toggles for sector positions (rightbar)
+ * Uses the active global window.LABEL_MODE to decide which text to show.
+ */
 function makeSectorToggle(map, posLayers, fileId, apt, cat, name, updateURL) {
   const cont = document.createElement("div");
   cont.className = "rightbar-file";
@@ -27,21 +63,33 @@ function makeSectorToggle(map, posLayers, fileId, apt, cat, name, updateURL) {
   header.style.fontWeight = "600";
   cont.appendChild(header);
 
-  Object.entries(posLayers).forEach(([pos, layer]) => {
-    const posId = `toggle-${apt}${cat}${name}${pos}`;
-    const cbDiv = makeCheckbox(posId, pos, true);
+  Object.entries(posLayers).forEach(([posKey, layer]) => {
+    const posId = `toggle-${apt}${cat}${name}${posKey}`;
+
+    const { posLabel, sectorLabel } = computeLabelsForPosition(posKey, layer);
+    const initialText = (window.LABEL_MODE === "sector") ? sectorLabel : posLabel;
+
+    const cbDiv = makeCheckbox(posId, initialText, true);
     cbDiv.className = "position-id-toggle";
+
+    // store both variants for live retitling when toggled
+    cbDiv.dataset.posLabel = posLabel;
+    cbDiv.dataset.sectorLabel = sectorLabel;
+
     cbDiv.querySelector("input").addEventListener("change", function () {
       this.checked ? map.addLayer(layer) : map.removeLayer(layer);
       updateURL();
     });
+
     cont.appendChild(cbDiv);
   });
 
   return cont;
 }
 
-// Position popup menu near trigger
+/**
+ * Position popup menu near trigger
+ */
 function positionPopupSidemenu(menu, trigger) {
   const rect = trigger.getBoundingClientRect();
   menu.style.display = "flex";
@@ -164,6 +212,7 @@ function buildSidebar(GEODATA, GEOLAYERS, map, updateURL, activeDomain = 'tracon
                 rightbar.appendChild(group);
               }
 
+              // entry is the position -> LayerGroup mapping
               const fileCont = makeSectorToggle(map, entry, fileId, apt, cat, name, updateURL);
               group.appendChild(fileCont);
             });
@@ -242,15 +291,20 @@ function filterCategory(catKey) {
 // Attach listeners for category filter buttons
 function attachFilterListeners() {
   let activeFilter = null;
-  document.querySelectorAll(".category-filter").forEach(btn => {
+  const buttons = document.querySelectorAll(".category-filter");
+
+  buttons.forEach(btn => {
     btn.addEventListener("click", () => {
       const cat = btn.dataset.category;
+      buttons.forEach(b => b.classList.remove("active-filter"));
+
       if (activeFilter === cat) {
         resetCategoryFilter();
         activeFilter = null;
       } else {
         filterCategory(cat);
         activeFilter = cat;
+        btn.classList.add("active-filter");
       }
     });
   });
@@ -264,6 +318,21 @@ function resetCategoryFilter() {
     cont.style.display = "none";
     dd.querySelector(".dropdown-toggle")?.classList.remove("open");
     cont.querySelectorAll(":scope > div").forEach(grp => { grp.style.display = ""; });
+  });
+}
+
+/**
+ * Live-update rightbar labels when label mode is toggled (no rebuild).
+ * Looks for elements created by makeSectorToggle and flips their <label> text.
+ */
+function refreshRightbarLabels() {
+  const wantSector = (window.LABEL_MODE === "sector");
+  document.querySelectorAll("#rightbar .position-id-toggle").forEach(div => {
+    const lab = div.querySelector("label");
+    if (!lab) return;
+    const posText = div.dataset.posLabel || "";
+    const secText = div.dataset.sectorLabel || posText;
+    lab.textContent = wantSector ? secText : posText;
   });
 }
 
