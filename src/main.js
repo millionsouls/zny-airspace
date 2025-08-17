@@ -9,6 +9,7 @@ import { setupSearch } from './ui/search.js';
 import { getLayersFromURL, updateURLFromMap } from './url-handler.js';
 
 let ACTIVE_STATION = 'tracon';
+window.CALLSIGN_MODE;
 
 // Helper functions
 function toggleCheckbox(id, checked = true) {
@@ -39,7 +40,7 @@ function switchDomain(newDomain) {
   document.querySelectorAll('[id^="sidebar-station-"]').forEach(div => {
     div.style.display = (div.id === `sidebar-station-${ACTIVE_STATION}`) ? "block" : "none";
   });
-  
+
   updateURLFromMap();
 }
 
@@ -160,13 +161,32 @@ fetch('data/file-index.json')
     attachSidebarListeners(document.getElementById("sidebar"));
     setupSearch(GEODATA, GEOLAYERS, map, updateURLFromMap);
 
+    const callsignBtn = document.getElementById("toggle-callsign");
     const enabled = getLayersFromURL();
+
+    window.LABEL_MODE = 'pos';
+
     if (enabled) {
       window.LayerControl.setActive(enabled);
     }
 
     document.getElementById("btn-tracon").addEventListener("click", () => switchDomain("tracon"));
     document.getElementById("btn-enroute").addEventListener("click", () => switchDomain("enroute"));
+    callsignBtn.addEventListener("click", () => {
+
+      if (window.LABEL_MODE === 'pos') {
+        window.LABEL_MODE = 'sector';
+        callsignBtn.innerHTML = '<i class="fa-solid fa-headset"></i> Callsign';
+      } else {
+        window.LABEL_MODE = 'pos';
+        callsignBtn.innerHTML = '<i class="fa-solid fa-id-badge"></i> ID';
+      }
+
+      // Refresh hover and rightbar labels
+      const box = document.getElementById('feature-info-box');
+      if (box) box.style.display = 'none';
+      window.refreshRightbarLabels?.();
+    });
   })
   .catch(err => {
     console.error("Failed to initialize app:", err);
