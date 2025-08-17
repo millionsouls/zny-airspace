@@ -48,6 +48,9 @@
       "sectors/MDT_E.json",
       "sectors/MDT_W.json"
     ],
+    "phl": [
+      "PHL_E_35.geojson"
+    ],
     "wri": [
       "WRI.geojson"
     ]
