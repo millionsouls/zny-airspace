@@ -46,11 +46,11 @@ function switchDomain(newDomain) {
 
 /**
  * LayerControl: Tracks active layers and syncs with URL.
+ * 
+ * getActive: Returns currently active layers by station/airport/category
+ * setActive: Activates layers based on decoded state objects, syncs checkboxes and map layers
  */
 window.LayerControl = {
-  /**
-   * Returns currently active layers by station/airport/category.
-   */
   getActive() {
     const active = {};
 
@@ -65,17 +65,13 @@ window.LayerControl = {
             // Sectors: collect active positions per file
             const actSec = {};
             for (const [file, posObj] of Object.entries(files)) {
-              const actPos = Object.entries(posObj)
-                .filter(([_, lyr]) => map.hasLayer(lyr))
-                .map(([pos]) => pos);
+              const actPos = Object.entries(posObj).filter(([_, lyr]) => map.hasLayer(lyr)).map(([pos]) => pos);
               if (actPos.length) actSec[file] = actPos;
             }
             if (Object.keys(actSec).length) active[station][apt][cat] = actSec;
           } else {
             // Other categories: collect active layer names
-            const actNames = Object.entries(files)
-              .filter(([_, lyr]) => map.hasLayer(lyr))
-              .map(([name]) => name);
+            const actNames = Object.entries(files).filter(([_, lyr]) => map.hasLayer(lyr)).map(([name]) => name);
             if (actNames.length) active[station][apt][cat] = actNames;
           }
         }
@@ -84,10 +80,6 @@ window.LayerControl = {
     return active;
   },
 
-  /**
-   * Activates layers based on decoded state object.
-   * Syncs checkboxes and map layers.
-   */
   setActive(decoded) {
     for (const [station, airports] of Object.entries(decoded)) {
       for (const [apt, cats] of Object.entries(airports)) {
@@ -97,7 +89,9 @@ window.LayerControl = {
               // Enroute: activate all positions for each sector file
               val.forEach(file => {
                 const posObj = getLayer(station, apt, cat, file);
+
                 if (!posObj) return;
+
                 Object.entries(posObj).forEach(([pos, lyr]) => {
                   activateLayer(lyr);
                   toggleCheckbox(`toggle-${apt}sectors${file}${pos}`);
@@ -108,9 +102,12 @@ window.LayerControl = {
               // Tracon: activate specific positions per sector file
               for (const [file, actPos] of Object.entries(val)) {
                 const posObj = getLayer(station, apt, cat, file);
+
                 if (!posObj) continue;
+
                 const allPos = Object.keys(posObj);
                 let toAct = [];
+
                 if (Array.isArray(actPos) && actPos.length) {
                   // If actPos are suffixes, match them
                   toAct = actPos.every(p => allPos.includes(p))
@@ -120,10 +117,12 @@ window.LayerControl = {
                 // Main sector checkbox
                 const mainId = `toggle-${apt}sectors${file}`;
                 const mainCb = document.getElementById(mainId);
+                
                 if (mainCb) {
                   mainCb.checked = !!toAct.length;
                   mainCb.dispatchEvent(new Event('change'));
                 }
+
                 // Activate/deactivate positions
                 Object.entries(posObj).forEach(([pos, lyr]) => {
                   if (toAct.includes(pos)) activateLayer(lyr);
@@ -173,7 +172,6 @@ fetch('data/file-index.json')
     document.getElementById("btn-tracon").addEventListener("click", () => switchDomain("tracon"));
     document.getElementById("btn-enroute").addEventListener("click", () => switchDomain("enroute"));
     callsignBtn.addEventListener("click", () => {
-
       if (window.LABEL_MODE === 'pos') {
         window.LABEL_MODE = 'sector';
         callsignBtn.innerHTML = '<i class="fa-solid fa-headset"></i> Callsign';

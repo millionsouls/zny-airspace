@@ -9,6 +9,8 @@ const CAT_LABELS = {
   videomap: "Videomap"
 };
 
+window.refreshRightbarLabels = refreshRightbarLabels;
+
 // Create a checkbox element
 function makeCheckbox(id, label, checked = false) {
   const div = document.createElement("div");
@@ -69,6 +71,7 @@ function makeSectorToggle(map, posLayers, fileId, apt, cat, name, updateURL) {
 
     const cbDiv = makeCheckbox(posId, initialText, true);
     cbDiv.className = "position-id-toggle";
+
     // store both variants for live retitling when toggled
     cbDiv.dataset.posLabel = posLabel;
     cbDiv.dataset.sectorLabel = sectorLabel;
@@ -332,8 +335,5 @@ function refreshRightbarLabels() {
     lab.textContent = wantSector ? secText : posText;
   });
 }
-
-// expose the refresh function globally so main.js can call it on toggle
-window.refreshRightbarLabels = refreshRightbarLabels;
 
 export { buildSidebar, attachSidebarListeners };

@@ -47,7 +47,7 @@ function hexToRGBA(hex, alpha = 0.8) {
 
 /**
  * Construct and format the data for a layer/combine all layers of same position
- * We keep grouping by Position (for altitude aggregation), but DISPLAY either Position or Sector per toggle.
+ * 
  */
 function buildFeatureInfoHTML(features) {
   const grouped = {};
@@ -89,7 +89,6 @@ function buildFeatureInfoHTML(features) {
       .filter(Boolean)
       .join('');
 
-    // 🔹 DISPLAY label: choose Sector when toggled, otherwise Position
     const firstProps = feats[0].properties || {};
     const displayLabel = (window.LABEL_MODE === 'sector')
       ? (firstProps.Sector ?? firstProps.sector ?? pos)
