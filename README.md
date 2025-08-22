@@ -77,7 +77,8 @@ Finally, these individual .geojson files create an option in the menu to turn a 
             },
             "properties": {
                 "OBJECTID": 1,
-                "Position": "N4N",
+                "Position": "N4N",        # ID, required
+                "Sector": "Depature,      # radio callsign
                 "Low": 7000,
                 "High": 7000,
                 "Notes": null,
