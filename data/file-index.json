@@ -30,16 +30,16 @@
       "videomap/JFK.geojson"
     ],
     "lga": [
-      "sectors/Depart 13 Land 22 (Belmont).json",
-      "sectors/Depart 13 Land 22 (No Belmont).json",
-      "sectors/Depart 13 Land 4.json",
-      "sectors/Depart 13 Land RNAV 13.json",
-      "sectors/Depart 22 Land 22.json",
-      "sectors/Depart 31 Land 22.geojson",
-      "sectors/Depart 31 Land 4.json",
-      "sectors/Depart 31 Land RNAV X 31.json",
-      "sectors/Depart 31 Land RNAV Z 31.json",
-      "sectors/Depart 4 Land 4 or RNAV X 31.json"
+      "sectors/LGA Depart 13 Land 22 (No Belmont).geojson",
+      "sectors/LGA Depart 13 Land ILS 13.geojson",
+      "sectors/LGA Depart 22 Land 22.geojson",
+      "sectors/LGA Depart 31 Land 22.geojson",
+      "sectors/LGA Depart 31 Land 4.geojson",
+      "sectors/LGA Depart 31 Land RNAV X 31.geojson",
+      "sectors/LGA Depart 31 Land RNAV Z 31.geojson",
+      "sectors/LGA Depart 4 Land 4 or RNAV X 31.geojson",
+      "sectors/LGA Depart 4 Land ILS 13.geojson",
+      "sectors/LGA Depart 4 Land RNAV Z 31.geojson"
     ],
     "lib": [
       "sectors/LIB.geojson"
