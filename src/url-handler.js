@@ -44,18 +44,18 @@ function encodeLayers(stationLayers) {
 
       // Handle sectors (special case for positions)
       if (cat === 'sectors' && typeof layers === 'object' && !Array.isArray(layers)) {
-  const sectorStrs = [];
-  Object.entries(layers).forEach(([file, pos]) => {
-    if (!pos || pos.length === 0) {
-      sectorStrs.push(file);
-      return;
-    }
-    // store positions for both TRACON and ENROUTE
-    const suffix = pos.join(',');
-    sectorStrs.push(`${file}-${suffix}`);
-  });
-  if (sectorStrs.length) catStrs.push(`${abbr}:${sectorStrs.join('|')}`);
-}
+        const sectorStrs = [];
+        Object.entries(layers).forEach(([file, pos]) => {
+          if (!pos || pos.length === 0) {
+            sectorStrs.push(file);
+            return;
+          }
+          // store positions for both TRACON and ENROUTE
+          const suffix = pos.join(',');
+          sectorStrs.push(`${file}-${suffix}`);
+        });
+        if (sectorStrs.length) catStrs.push(`${abbr}:${sectorStrs.join('|')}`);
+      }
 
     }
     if (catStrs.length) airports.push(`${apt};${catStrs.join(';')}`);
@@ -94,19 +94,19 @@ function decodeLayers(encoded, station) {
         if (!cat) return;
 
         if (cat === 'sectors') {
-  const sectorObj = {};
-  layerStr.split('|').forEach(entry => {
-    const dashIdx = entry.lastIndexOf('-');
-    if (dashIdx === -1) {
-      sectorObj[entry] = []; // no positions
-    } else {
-      const file = entry.slice(0, dashIdx);
-      const positions = entry.slice(dashIdx + 1).split(',').filter(Boolean);
-      sectorObj[file] = positions;
-    }
-  });
-  if (Object.keys(sectorObj).length) result[apt][cat] = sectorObj;
-}
+          const sectorObj = {};
+          layerStr.split('|').forEach(entry => {
+            const dashIdx = entry.lastIndexOf('-');
+            if (dashIdx === -1) {
+              sectorObj[entry] = []; // no positions
+            } else {
+              const file = entry.slice(0, dashIdx);
+              const positions = entry.slice(dashIdx + 1).split(',').filter(Boolean);
+              sectorObj[file] = positions;
+            }
+          });
+          if (Object.keys(sectorObj).length) result[apt][cat] = sectorObj;
+        }
 
       });
     });

@@ -13,7 +13,8 @@
       "ELM.geojson"
     ],
     "ewr": [
-      "sectors/EWR_SW.json",
+      "sectors/EWR_NE.geojson",
+      "sectors/EWR_SW.geojson",
       "stars/FQM3.geojson",
       "stars/PHLBO4.geojson"
     ],
