@@ -26,7 +26,8 @@
       "sectors/ISP.geojson"
     ],
     "jfk": [
-      "sectors/JFK_4s.json",
+      "sectors/JFK_13.geojson",
+      "sectors/JFK_4.geojson",
       "stars/PARCH3.geojson",
       "videomap/JFK.geojson"
     ],
@@ -43,7 +44,7 @@
       "sectors/Depart 4 Land RNAV Z 31.geojson"
     ],
     "lib": [
-      "sectors/LIB.geojson"
+      "LIB.geojson"
     ],
     "mdt": [
       "sectors/MDT_E.json",
