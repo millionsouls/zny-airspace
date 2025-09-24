@@ -26,8 +26,10 @@
       "sectors/ISP.geojson"
     ],
     "jfk": [
-      "sectors/JFK_13.geojson",
-      "sectors/JFK_4.geojson",
+      "sectors/JFK_13s.geojson",
+      "sectors/JFK_22s.geojson",
+      "sectors/JFK_31s.geojson",
+      "sectors/JFK_4s.geojson",
       "stars/PARCH3.geojson",
       "videomap/JFK.geojson"
     ],
@@ -52,7 +54,9 @@
     ],
     "phl": [
       "PHL_E_17.geojson",
-      "PHL_E_35.geojson"
+      "PHL_E_35.geojson",
+      "PHL_W_17.geojson",
+      "PHL_W_35.geojson"
     ],
     "wri": [
       "WRI.geojson"
