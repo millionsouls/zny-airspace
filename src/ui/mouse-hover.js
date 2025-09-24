@@ -65,8 +65,8 @@ function buildFeatureInfoHTML(features) {
     feats.forEach(f => {
       const lowRaw = f.properties.Low ?? ''
       const highRaw = f.properties.High ?? ''
-      const lowFmt = formatAlt(lowRaw)
-      const highFmt = (lowRaw === highRaw) ? '' : formatAlt(highRaw)
+      const lowFmt = (lowRaw === highRaw) ? '' : formatAlt(lowRaw)
+      const highFmt = formatAlt(highRaw)
 
       const key = `${lowFmt}|${highFmt}`
       if (!altSet.has(key)) {
@@ -77,10 +77,10 @@ function buildFeatureInfoHTML(features) {
 
     altRows.sort((a, b) => {
       const parse = v => v === 'SFC' ? 0 : parseInt(v, 10) || 0
-      return parse(b.low) - parse(a.low)
+      return parse(b.high) - parse(a.high)
     });
 
-    const minLow = Math.max(...altRows.map(r => r.low === 'SFC' ? 0 : parseInt(r.low, 10) || 0))
+    const minLow = Math.max(...altRows.map(r => r.high === 'SFC' ? 0 : parseInt(r.high, 10) || 0))
     const color = feats[0].properties.Fill || "#222"
     const isBright = isColorBright(color)
     const textColor = isBright ? '#000' : '#fff'
@@ -101,8 +101,8 @@ function buildFeatureInfoHTML(features) {
           <div class="feature-info-altitudes">
             ${altRows.map(row => `
               <div class="feature-info-alt-row">
-                <div class="feature-info-low">${row.low}</div>
-                <div class="feature-info-high">${row.high}</div>
+                <div class="feature-info-low">${row.high}</div>
+                <div class="feature-info-high">${row.low}</div>
               </div>
             `).join('')}
           </div>
