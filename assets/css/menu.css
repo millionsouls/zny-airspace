@@ -264,7 +264,8 @@
   padding: 5px;
   display: none;
   flex-direction: column;
-  border-radius: 8px
+  font-size: 14px;
+  border-radius: 8px;
 }
 .popup-sidemenu {
   position: fixed;
@@ -279,7 +280,7 @@
   align-items: flex-start;
   justify-content: center;
   z-index: 2000;
-  font-size: 12px;
+  font-size: 14px;
   border-radius: 4px;
   box-shadow: var(--boxshadow-center);
 }

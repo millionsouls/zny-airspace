@@ -136,7 +136,7 @@ function buildSidebar(GEODATA, GEOLAYERS, map, updateURL, activeDomain = 'tracon
         names = names.slice().sort((b, a) => b.localeCompare(a));
 
         const label = CAT_LABELS[cat] || cat;
-        const popup = names.length >= 5;
+        const popup = names.length >= 99; // LIMIT FOR POP-UP
         const tgt = popup ? document.createElement("div") : ddCont;
 
         if (popup) {
@@ -162,6 +162,7 @@ function buildSidebar(GEODATA, GEOLAYERS, map, updateURL, activeDomain = 'tracon
           const lbl = document.createElement("div");
           lbl.style.fontWeight = "600";
           lbl.style.marginTop = "6px";
+          lbl.style.fontSize = "14px";
           lbl.innerHTML = label;
           ddCont.appendChild(lbl);
         }

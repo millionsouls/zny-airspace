@@ -32,11 +32,10 @@ function ensurePane(map, paneName, zIndex) {
 function inferCategory(data) {
   const props = data.features[0]?.properties || {};
   if ('Position' in props) return 'sectors';
-  if ('type' in props && ['STAR', 'SID'].includes(props.type.toUpperCase())) {
+  if ('id' in props && ['STAR', 'SID'].includes(props.type.toUpperCase())) {
     return props.type.toLowerCase();
   }
-  if (data.name?.toLowerCase().includes('video')) return 'videomap';
-  return null;
+  return 'videomap';
 }
 
 /**
