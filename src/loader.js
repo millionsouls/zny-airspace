@@ -12,9 +12,6 @@ const fetchPromises = [];
 /**
  * Create map if does not exist
  * 
- * @param {*} map 
- * @param {*} paneName 
- * @param {*} zIndex 
  */
 function ensurePane(map, paneName, zIndex) {
   if (!map.getPane(paneName)) {
@@ -41,10 +38,6 @@ function inferCategory(data) {
 /**
  * Load and construct layers for procedures: star/sid. Build the markers and labels.
  * 
- * @param {*} map 
- * @param {*} data 
- * @param {*} fmtName 
- * @returns 
  */
 function loadPD(map, data, fmtName) {
   const linePane = `pane-lines-${fmtName}`;
@@ -92,27 +85,18 @@ function loadPD(map, data, fmtName) {
 /**
  * Load a videomap, nothing special is done with these
  * 
- * @param {*} map 
- * @param {*} data 
- * @param {*} fmtName 
- * @returns 
  */
 function loadVM(map, data, fmtName) {
   return L.geoJSON(data, {
-    style: feature => feature.geometry.type === "LineString" ? { color: "#000", weight: 1.3 } : {},
+    style: feature => feature.geometry.type === "LineString" ? { color: "#000", weight: 1.3, interactive: false } : { interactive: false },
     pointToLayer: () => null
   });
 }
 
+
 /**
  * Load in sector files (airspace). 
  * 
- * @param {*} map 
- * @param {*} data 
- * @param {*} upperKey 
- * @param {*} category 
- * @param {*} name 
- * @returns 
  */
 function loadSector(map, data, upperKey, category, name) {
   const zIndex = data.features[0]?.properties?.style?.zIndex || 0;
@@ -147,12 +131,6 @@ function loadSector(map, data, upperKey, category, name) {
 /**
  * Create directories and paths for all layers that are generated
  * 
- * @param {*} station 
- * @param {*} airport 
- * @param {*} category 
- * @param {*} name 
- * @param {*} group 
- * @param {*} isArray 
  */
 function storeMetadata(station, airport, category, name, group, isArray = false) {
   const layers = GEOLAYERS[station];
@@ -174,9 +152,6 @@ function storeMetadata(station, airport, category, name, group, isArray = false)
 /**
  * Start point, loops through the file-index.json and loads it. Create promises to ensure files are loaded before anything else is done.
  * 
- * @param {*} GEOFILES 
- * @param {*} map 
- * @returns 
  */
 function loadGeoFiles(GEOFILES, map) {
   Object.entries(GEOFILES).forEach(([station, domainFiles]) => {

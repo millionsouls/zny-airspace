@@ -12,8 +12,6 @@ import { map } from '../map.js';
 /**
  * Format altitudes
  * 
- * @param {int} val 
- * @returns 
  */
 function formatAlt(val) {
   if (typeof val === "number" || /^\d+$/.test(val)) {
@@ -172,6 +170,10 @@ function isLatLngInPolygon(latlng, polygon) {
  * Attach hover handles to every layer feature; detect if mouse is over a feature and show/hide info box
  */
 function handleFeatureHover(feature, layer) {
+    if (feature?.properties?.type === "videomap" || feature?.properties?.Category === "videomap") {
+    return;
+  }
+
   const mapContainer = map.getContainer();
   if (!mapContainer) return;
 
@@ -213,7 +215,7 @@ function handleFeatureHover(feature, layer) {
       const featuresAtPoint = [];
       map.eachLayer(l => {
         if (l.feature && l.getBounds && l.getBounds().contains(e.latlng)) {
-          if (l instanceof L.Polygon || l instanceof L.MultiPolygon) {
+          if (l instanceof L.Polygon || (typeof L.MultiPolygon !== 'undefined' && l instanceof L.MultiPolygon)) {
             if (!isLatLngInPolygon(e.latlng, l)) return;
 
             featuresAtPoint.push(l.feature)
