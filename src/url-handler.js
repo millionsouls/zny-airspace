@@ -42,7 +42,6 @@ function encodeLayers(stationLayers) {
       const layers = cats[cat];
       if (!layers) continue;
 
-      // Handle sectors (special case for positions)
       if (cat === 'sectors' && typeof layers === 'object' && !Array.isArray(layers)) {
         const sectorStrs = [];
         Object.entries(layers).forEach(([file, pos]) => {
@@ -50,13 +49,14 @@ function encodeLayers(stationLayers) {
             sectorStrs.push(file);
             return;
           }
-          // store positions for both TRACON and ENROUTE
           const suffix = pos.join(',');
           sectorStrs.push(`${file}-${suffix}`);
         });
         if (sectorStrs.length) catStrs.push(`${abbr}:${sectorStrs.join('|')}`);
+      } else if (Array.isArray(layers)) {
+        // Handle other categories (videomap, stars, sids)
+        if (layers.length) catStrs.push(`${abbr}:${layers.join('|')}`);
       }
-
     }
     if (catStrs.length) airports.push(`${apt};${catStrs.join(';')}`);
   });
@@ -106,8 +106,11 @@ function decodeLayers(encoded, station) {
             }
           });
           if (Object.keys(sectorObj).length) result[apt][cat] = sectorObj;
+        } else {
+          // Handle other categories (videomap, stars, sids)
+          const arr = layerStr.split('|').filter(Boolean);
+          if (arr.length) result[apt][cat] = arr;
         }
-
       });
     });
     return result;
