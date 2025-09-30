@@ -1,6 +1,8 @@
 # ZNY TRACON Airspace Visualization
-Display TRACON airspace boundaries and shelves on Leaflet/OSM map layer. Additional options for displaying SIDs, STARs, and video maps.\
-<b>FOR FLIGHT SIMULATION PURPOSES ONLY</b>
+Display TRACON airspace boundaries and shelves on Leaflet/OSM map layer. Additional options for displaying SIDs, STARs, and video maps.
+
+<b>FOR FLIGHT SIMULATION PURPOSES ONLY.</b>
+Not for real world navigation. This site is in no way affiliated with the FAA, New York TRACON or New York ARTCC, and no information found on this site should ever be used for real world flight planning, operation, air traffic control or air traffic management
 
 Contact kevinw@nyartcc.org for questions/comments/concerns/inquiries.\
 (I'm really bad at writing documentation)
@@ -23,15 +25,15 @@ Copy/Fork/Download and run
 ```
 
 ## Structure
-All files must be in the `GEOJSON` format and contain a `FeatureCollection`. Below are two examples of the [FQM3 STAR](data/tracon/ewr/stars/FQM3.geojson) and [EWR SW](data/tracon/ewr/sectors/EWR_SW.json) files. Videomaps follow the same format but do not require a `properties` field as the geometry is plainly rendered.
+All files must be in the `GEOJSON` format and contain a `FeatureCollection`. Below are two examples of the [FQM3 STAR](data/tracon/ewr/stars/FQM3.geojson) and [EWR SW](data/tracon/ewr/sectors/EWR_SW.geojson) files. Videomaps follow the same format but do not require a `properties` field as the geometry is plainly rendered.
 
 The general file structure is as follows: [`data/`](data) is the parent file where everything should be stored. Next step down are the 'TRACON/ENROUTE' folders which contain files for the respective type. These categories are hard-coded and must be edited in the code to allow for more or removed.
 
 Each folder under those represents a unique <i>option or group</i> such as [`JFK`](data/tracon/jfk). These folders create an unique menu option:
 
-Under each folder contains `sector` which provides the airspace geometry, `sid` and `star` which contain the procedure(s), and `videomap` containing the videomap(s). You do not need to create these particular sub-folders, as the code can attempt figure out what they are by themselves, these are purely for organization purposes and/or clarity.
+Under each folder contains `sector` which provides the airspace geometry, `sid` and `star` which contain the procedure(s), and `videomap` containing the videomap(s). Athough these folders are not strictly required, it is recommended.
 
-Finally, these individual .geojson files create an option in the menu to turn a layer/sector/area/procedure's visibility on or off. TRACON `sector` files have another feature that allows individual groups of geometries/polgons to be toggled. For example, within [`JFK_4s`](data/tracon/jfk/sectors/JFK_4s.json), the positions `2G, 2K, 2J, 2A, etc` can be individually toggled. <b>Changes to any position's visibility will be reflected in the URL</b>. 
+Finally, these individual .geojson files create an option in the menu to turn a layer/sector/area/procedure's visibility on or off. TRACON `sector` files have another feature that allows individual groups of geometries/polgons to be toggled. For example, within [`JFK_4s`](data/tracon/jfk/sectors/JFK_4s.geojson), the positions `2G, 2K, 2J, 2A, etc` can be individually toggled. <b>Changes to any position's visibility will be reflected in the URL</b>. 
 
 <b>If new files are added or existing names are changed, [file-index.json](data/file-index.json) must be updated to incorporate the changes for the files to be loaded.</b> This can be done automatically via [gen-file-index](src/gen-file-index.py) or manually by the user.
 
