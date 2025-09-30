@@ -88,9 +88,7 @@ function buildFeatureInfoHTML(features) {
       .join('');
 
     const firstProps = feats[0].properties || {};
-    const displayLabel = (window.LABEL_MODE === 'sector')
-      ? (firstProps.Sector ?? firstProps.sector ?? pos)
-      : (pos || firstProps.Sector || firstProps.sector || '');
+    const displayLabel = (window.LABEL_MODE === 'sector') ? (firstProps.Sector ?? firstProps.sector ?? pos) : (pos || firstProps.Sector || firstProps.sector || ''); // Determines if to use sector ID or callsign
 
     const html = `
       <div class="feature-info-row" style="background:${color}; color:${textColor};">
@@ -119,8 +117,9 @@ function buildFeatureInfoHTML(features) {
 
 /**
  * Show the info box when over a layer
+ * 
  */
-function showfeatureInfoBox(features, event, hoveredFeature = null) {
+function showfeatureInfoBox(features, event) {
   if (!features.length) {
     featureInfoBox.style.display = 'none'
     return;
@@ -143,6 +142,7 @@ function showfeatureInfoBox(features, event, hoveredFeature = null) {
 
 /**
  * Remove hover info box on leaving a layer
+ * 
  */
 function hidefeatureInfoBox() {
   featureInfoBox.style.display = 'none';
@@ -151,6 +151,7 @@ function hidefeatureInfoBox() {
 
 /**
  * Ensure a latlng is within a certain polygon
+ * 
  */
 function isLatLngInPolygon(latlng, polygon) {
   if (!polygon.getLatLngs) return false;
@@ -168,6 +169,7 @@ function isLatLngInPolygon(latlng, polygon) {
 
 /**
  * Attach hover handles to every layer feature; detect if mouse is over a feature and show/hide info box
+ * 
  */
 function handleFeatureHover(feature, layer) {
     if (feature?.properties?.type === "videomap" || feature?.properties?.Category === "videomap") {
@@ -200,8 +202,10 @@ function handleFeatureHover(feature, layer) {
       if (feature?.properties?.notes) {
         let x = e.originalEvent.clientX + 5
         let y = e.originalEvent.clientY - notesHoverBox.offsetHeight - 5
+
         if (x < 0) x = 5
         if (y < 0) y = 5
+
         notesHoverBox.style.left = x + 'px'
         notesHoverBox.style.top = y + 'px'
         notesHoverBox.style.display = 'block'

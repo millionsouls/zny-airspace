@@ -177,9 +177,7 @@ function buildSidebar(GEODATA, GEOLAYERS, map, updateURL, activeDomain = 'tracon
 
           cb.addEventListener("change", function () {
             if (!entry) return;
-            const layers = (entry instanceof L.Layer || entry instanceof L.LayerGroup)
-              ? [entry]
-              : Object.values(entry);
+            const layers = (entry instanceof L.Layer || entry instanceof L.LayerGroup) ? [entry] : Object.values(entry);
             layers.forEach(layer => this.checked ? map.addLayer(layer) : map.removeLayer(layer));
             updateURL();
           });
@@ -225,6 +223,7 @@ function buildSidebar(GEODATA, GEOLAYERS, map, updateURL, activeDomain = 'tracon
       dd.appendChild(ddCont);
       domainDiv.appendChild(dd);
     });
+
     attachFilterListeners();
     sidebar.appendChild(domainDiv);
   });
@@ -315,9 +314,12 @@ function attachFilterListeners() {
 function resetCategoryFilter() {
   document.querySelectorAll("#sidebar .dropdown").forEach(dd => {
     dd.style.display = "block";
+
     const cont = dd.querySelector(".dropdown-container");
+
     cont.style.display = "none";
     dd.querySelector(".dropdown-toggle")?.classList.remove("open");
+
     cont.querySelectorAll(":scope > div").forEach(grp => { grp.style.display = ""; });
   });
 }
@@ -330,7 +332,9 @@ function refreshRightbarLabels() {
   const wantSector = (window.LABEL_MODE === "sector");
   document.querySelectorAll("#rightbar .position-id-toggle").forEach(div => {
     const lab = div.querySelector("label");
+
     if (!lab) return;
+    
     const posText = div.dataset.posLabel || "";
     const secText = div.dataset.sectorLabel || posText;
     lab.textContent = wantSector ? secText : posText;

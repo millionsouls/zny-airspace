@@ -6,6 +6,8 @@
 
 const iconPath = "../assets/icons/";
 
+// TODO: make textbox auto reposition if overlapping?
+
 /**
  * Transform altitude/speed constraints into structured data
  * 
@@ -54,8 +56,6 @@ function fmtConstraint(constraints) {
 /**
  * Help function to construct crossing restruction html
  * 
- * @param {*} item 
- * @returns 
  */
 function buildTextHTML(item) {
   if (item.length === 2) {
@@ -79,9 +79,6 @@ function buildTextHTML(item) {
 /**
  * SVG image editing
  * 
- * @param {*} svg 
- * @param {*} color 
- * @returns 
  */
 async function parseSVG(props, type, svg) {
   if (!svg) {

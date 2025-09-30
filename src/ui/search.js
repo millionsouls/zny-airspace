@@ -5,10 +5,6 @@
 /**
  * Setup search input event, filtering, rendering results and toggling layers
  * 
- * @param {Object} GEODATA 
- * @param {Object} GEOLAYERS 
- * @param {L.Map} map 
- * @param {Function} updateURLFromMapState 
  */
 function setupSearch(GEODATA, GEOLAYERS, map, updateURLFromMapState) {
   const searchInput = document.getElementById("search-input");
@@ -40,7 +36,6 @@ function setupSearch(GEODATA, GEOLAYERS, map, updateURLFromMapState) {
 
     ['tracon', 'enroute'].forEach(domain => {
       const domainData = GEODATA[domain];
-      const domainLayers = GEOLAYERS[domain];
 
       Object.entries(domainData).forEach(([airport, categories]) => {
         Object.entries(categories).forEach(([category, data]) => {
@@ -48,6 +43,7 @@ function setupSearch(GEODATA, GEOLAYERS, map, updateURLFromMapState) {
             Object.keys(data).forEach(filename => {
               const combined = `[${domain}] [${airport}] ${filename}`.toLowerCase();
               const allMatch = keywords.every(kw => combined.includes(kw));
+
               if (allMatch) {
                 matches.push({ domain, airport, category, name: filename });
               }
@@ -56,6 +52,7 @@ function setupSearch(GEODATA, GEOLAYERS, map, updateURLFromMapState) {
             data.forEach(name => {
               const combined = `[${domain}] [${airport}] ${name}`.toLowerCase();
               const allMatch = keywords.every(kw => combined.includes(kw));
+
               if (allMatch) {
                 matches.push({ domain, airport, category, name });
               }

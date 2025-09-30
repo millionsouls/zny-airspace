@@ -1,23 +1,17 @@
 /**
  * Handles encoding/decoding of layer settings in the URL for map state sharing
+ * 
  */
 
 // Category abbreviations for encoding
 const CAT_ABBR = { sectors: 1, stars: 2, sids: 3, videomap: 4 };
 const CAT_ABBR_REV = { 1: 'sectors', 2: 'stars', 3: 'sids', 4: 'videomap' };
-const INCLUDE_POS = true;
 
 /**
  * Utility functions for encoding/decoding and compression
+ * 
+ * lzstring seems to work better now with position parms
  */
-function encBase64(str) {
-  return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-}
-function decBase64(str) {
-  str = str.replace(/-/g, '+').replace(/_/g, '/');
-  while (str.length % 4) str += '=';
-  return atob(str);
-}
 function compress(str) {
   return LZString.compressToEncodedURIComponent(str);
 }
@@ -27,8 +21,7 @@ function decompress(str) {
 
 /**
  * Encodes layer data into a compact string for URL usage
- * @param {Object} stationLayers - Layer data for a station
- * @returns {string} - Encoded string
+ * 
  */
 function encodeLayers(stationLayers) {
   const airports = [];
@@ -67,9 +60,7 @@ function encodeLayers(stationLayers) {
 
 /**
  * Decodes layer data from a compact URL string
- * @param {string} encoded - Encoded string from URL
- * @param {string} station - Station type ('enroute' or 'tracon')
- * @returns {Object} - Decoded layer data
+ * 
  */
 function decodeLayers(encoded, station) {
   if (!encoded) return {};
@@ -122,7 +113,7 @@ function decodeLayers(encoded, station) {
 
 /**
  * Reads enabled layers from the URL parameters
- * @returns {Object} - Enabled layers by station
+ * 
  */
 function getLayersFromURL() {
   const params = new URLSearchParams(window.location.search);
@@ -137,6 +128,7 @@ function getLayersFromURL() {
 
 /**
  * Updates the URL to reflect the current map state
+ * 
  */
 function updateURLFromMap() {
   if (!window.LayerControl) return;

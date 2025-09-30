@@ -29,8 +29,10 @@ const baseLayers = {
     url: 'https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer'
   }),
 };
+
 let currentLayer = baseLayers["Standard"]
 let basemapVisible = true
+
 const map = L.map('map', {
   center: CONFIG.center,
   zoom: CONFIG.zoom,

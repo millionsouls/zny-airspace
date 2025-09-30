@@ -167,9 +167,7 @@ function loadGeoFiles(GEOFILES, map) {
             const name = data.name || file.split("/").pop().split('.')[0];
             const fmtName = `${upperKey}_${name}`.replace(/[^\w]/g, '');
             const categoryHint = file.split("/")[0].toLowerCase();
-            const category = ["sectors", "stars", "sids", "videomap"].includes(categoryHint)
-              ? categoryHint
-              : inferCategory(data);
+            const category = ["sectors", "stars", "sids", "videomap"].includes(categoryHint) ? categoryHint : inferCategory(data);
 
             if (!category) return;
 

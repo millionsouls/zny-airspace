@@ -47,6 +47,7 @@ function switchDomain(newDomain) {
 /**
  * LayerControl: Tracks active layers and syncs with URL.
  * 
+ * 
  * getActive: Returns currently active layers by station/airport/category
  * setActive: Activates layers based on decoded state objects, syncs checkboxes and map layers
  */
