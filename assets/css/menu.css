@@ -120,7 +120,8 @@
   transform: translateX(-50%);
   z-index: 2000;
   text-align: center;
-  background: rgb(255, 255, 255);
+  background: var(--bg-one);
+  box-shadow: var(--boxshadow-center);
   padding: 6px 10px 6px 10px;
   border-radius: 6px;
 }
