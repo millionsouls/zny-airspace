@@ -17,23 +17,23 @@
       "ELM.geojson"
     ],
     "ewr": [
-      "sectors/EWR_NE.geojson",
-      "sectors/EWR_SW.geojson",
+      "sectors/EWR NE.geojson",
+      "sectors/EWR SW.geojson",
       "videomap/N90 EWR - Video Map.geojson"
     ],
     "hpn": [
       "sectors/HPN 16.geojson",
-      "sectors/HPN 34.json"
+      "sectors/HPN 34.geojson"
     ],
     "isp": [
       "sectors/ISP.geojson",
       "videomap/N90 ISP - Video Map.geojson"
     ],
     "jfk": [
-      "sectors/JFK_13s.geojson",
-      "sectors/JFK_22s.geojson",
-      "sectors/JFK_31s.geojson",
-      "sectors/JFK_4s.geojson",
+      "sectors/JFK 13s.geojson",
+      "sectors/JFK 22s.geojson",
+      "sectors/JFK 31s.geojson",
+      "sectors/JFK 4s.geojson",
       "videomap/023__N90 JFK - 13s.geojson",
       "videomap/31s.geojson",
       "videomap/N90 JFK - 22s.geojson",
@@ -41,16 +41,18 @@
       "videomap/N90 JFK - Config Change.geojson"
     ],
     "lga": [
-      "sectors/Depart 13 Land 22 (No Belmont).geojson",
+      "sectors/Depart 13 Land 22.geojson",
+      "sectors/Depart 13 Land 4.geojson",
       "sectors/Depart 13 Land ILS 13.geojson",
+      "sectors/Depart 13 Land RNAV 13.geojson",
       "sectors/Depart 22 Land 22.geojson",
       "sectors/Depart 31 Land 22.geojson",
       "sectors/Depart 31 Land 4.geojson",
-      "sectors/Depart 31 Land RNAV X 31.geojson",
-      "sectors/Depart 31 Land RNAV Z 31.geojson",
-      "sectors/Depart 4 Land 4 or RNAV X 31.geojson",
+      "sectors/Depart 31 Land RNAVX 31.geojson",
+      "sectors/Depart 31 Land RNAVZ 31.geojson",
+      "sectors/Depart 4 Land 4 or RNAVX 31.geojson",
       "sectors/Depart 4 Land ILS 13.geojson",
-      "sectors/Depart 4 Land RNAV Z 31.geojson",
+      "sectors/Depart 4 Land RNAVZ 31.geojson",
       "videomap/N90 LGA - LOC 31.geojson",
       "videomap/N90 LGA - Video Map.geojson"
     ],
@@ -60,16 +62,16 @@
       "videomap/N90 LIB - Departure.geojson"
     ],
     "mdt": [
-      "sectors/MDT_E.json",
-      "sectors/MDT_W.json",
+      "sectors/MDT_E.geojson",
+      "sectors/MDT_W.geojson",
       "videomap/MDT - East.geojson",
       "videomap/MDT - West.geojson"
     ],
     "phl": [
-      "sectors/PHL_E_17.geojson",
-      "sectors/PHL_E_35.geojson",
-      "sectors/PHL_W_17.geojson",
-      "sectors/PHL_W_35.geojson",
+      "sectors/PHL East 17.geojson",
+      "sectors/PHL East 35.geojson",
+      "sectors/PHL West 17.geojson",
+      "sectors/PHL West 35.geojson",
       "videomap/PHL - Video Map East.geojson",
       "videomap/PHL - Video Map West.geojson"
     ],
