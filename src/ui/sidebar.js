@@ -122,7 +122,7 @@ function buildSidebar(GEODATA, GEOLAYERS, map, updateURL, activeDomain = 'tracon
     domainDiv.id = `sidebar-station-${domain}`;
     domainDiv.style.display = (domain === activeDomain) ? "block" : "none";
 
-    // Sort airport keys alphabetically (locale-aware, case-insensitive)
+    // Sort airport keys alphabetically
     const airportKeys = Object.keys(GEODATA[domain] || {}).sort((a, b) =>
       a.localeCompare(b, undefined, { sensitivity: 'base' })
     );
