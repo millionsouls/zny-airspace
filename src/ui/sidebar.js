@@ -352,4 +352,4 @@ function refreshRightbarLabels() {
   });
 }
 
-export { buildSidebar, attachSidebarListeners };
+export { buildSidebar, attachSidebarListeners, resetCategoryFilter };

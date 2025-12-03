@@ -4,7 +4,7 @@
 
 import { loadGeoFiles, GEODATA, GEOLAYERS } from './loader.js';
 import { map } from './map.js';
-import { buildSidebar, attachSidebarListeners } from './ui/sidebar.js';
+import { buildSidebar, attachSidebarListeners, resetCategoryFilter } from './ui/sidebar.js';
 import { setupSearch } from './ui/search.js';
 import { getLayersFromURL, updateURLFromMap } from './url-handler.js';
 
@@ -40,6 +40,15 @@ function switchDomain(newDomain) {
   document.querySelectorAll('[id^="sidebar-station-"]').forEach(div => {
     div.style.display = (div.id === `sidebar-station-${ACTIVE_STATION}`) ? "block" : "none";
   });
+
+  // Show/Hide filter options when enroute is selected
+  const filterDiv = document.getElementById('category-filters');
+  if (filterDiv) {
+    filterDiv.style.display = (ACTIVE_STATION === 'tracon') ? '' : 'none';
+    if (ACTIVE_STATION !== 'tracon') {
+      resetCategoryFilter();
+    };
+  }
 
   updateURLFromMap();
 }
