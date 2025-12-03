@@ -11,8 +11,8 @@ const CONFIG = {
   center: [40.703376, -74.015415],
   zoom: 7.5,
   minZoom: 5,
-  maxZoom: 18,
-  maxZoom: 18,
+  maxZoom: 15,
+  maxZoom: 15,
   bounds: [
     [20, -100],
     [50, -10]

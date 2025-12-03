@@ -67,7 +67,10 @@ function makeSectorToggle(map, posLayers, fileId, apt, cat, name, updateURL) {
     const posId = `toggle-${apt}${cat}${name}${posKey}`;
 
     const { posLabel, sectorLabel } = computeLabelsForPosition(posKey, layer);
-    const initialText = (window.LABEL_MODE === "sector") ? sectorLabel : posLabel;
+    let initialText;
+    if (window.LABEL_MODE === "sector") initialText = sectorLabel;
+    else if (window.LABEL_MODE === "combined") initialText = `${posLabel} | ${sectorLabel}`;
+    else initialText = posLabel;
 
     const cbDiv = makeCheckbox(posId, initialText, true);
     cbDiv.className = "position-id-toggle";
@@ -119,7 +122,13 @@ function buildSidebar(GEODATA, GEOLAYERS, map, updateURL, activeDomain = 'tracon
     domainDiv.id = `sidebar-station-${domain}`;
     domainDiv.style.display = (domain === activeDomain) ? "block" : "none";
 
-    Object.entries(GEODATA[domain] || {}).forEach(([apt, cats]) => {
+    // Sort airport keys alphabetically (locale-aware, case-insensitive)
+    const airportKeys = Object.keys(GEODATA[domain] || {}).sort((a, b) =>
+      a.localeCompare(b, undefined, { sensitivity: 'base' })
+    );
+
+    airportKeys.forEach(apt => {
+      const cats = GEODATA[domain][apt];
       const dd = document.createElement("div");
       dd.className = "dropdown";
 
@@ -329,15 +338,17 @@ function resetCategoryFilter() {
  * Looks for elements created by makeSectorToggle and flips their <label> text.
  */
 function refreshRightbarLabels() {
-  const wantSector = (window.LABEL_MODE === "sector");
+  const mode = window.LABEL_MODE;
   document.querySelectorAll("#rightbar .position-id-toggle").forEach(div => {
     const lab = div.querySelector("label");
 
     if (!lab) return;
-    
     const posText = div.dataset.posLabel || "";
     const secText = div.dataset.sectorLabel || posText;
-    lab.textContent = wantSector ? secText : posText;
+
+    if (mode === 'sector') lab.textContent = secText;
+    else if (mode === 'combined') lab.textContent = `${posText} | ${secText}`;
+    else lab.textContent = posText;
   });
 }
 

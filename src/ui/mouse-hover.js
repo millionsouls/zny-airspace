@@ -88,7 +88,20 @@ function buildFeatureInfoHTML(features) {
       .join('');
 
     const firstProps = feats[0].properties || {};
-    const displayLabel = (window.LABEL_MODE === 'sector') ? (firstProps.Sector ?? firstProps.sector ?? pos) : (pos || firstProps.Sector || firstProps.sector || ''); // Determines if to use sector ID or callsign
+    // Determine label based on global mode: 'pos' (ID), 'sector' (Callsign), 'combined'
+    let displayLabel = '';
+    const posText = pos || firstProps.Position || firstProps.position || '';
+    const secText = firstProps.Sector || firstProps.sector || '';
+
+    if (window.LABEL_MODE === 'sector') {
+      displayLabel = secText || posText;
+    } else if (window.LABEL_MODE === 'combined') {
+      // Keep the hover box multi-line like before
+      displayLabel = posText + '\n|\n' + (secText || '');
+    } else {
+      displayLabel = posText || secText;
+    }
+    //const displayLabel = (window.LABEL_MODE === 'sector') ? (firstProps.Sector ?? firstProps.sector ?? pos) : (pos || firstProps.Sector || firstProps.sector || ''); // Determines if to use sector ID or callsign
 
     const html = `
       <div class="feature-info-row" style="background:${color}; color:${textColor};">
@@ -172,7 +185,7 @@ function isLatLngInPolygon(latlng, polygon) {
  * 
  */
 function handleFeatureHover(feature, layer) {
-    if (feature?.properties?.type === "videomap" || feature?.properties?.Category === "videomap") {
+  if (feature?.properties?.type === "videomap" || feature?.properties?.Category === "videomap") {
     return;
   }
 
@@ -196,6 +209,13 @@ function handleFeatureHover(feature, layer) {
     mapContainer.classList.remove('hovering-feature');
     hidefeatureInfoBox();
   });
+
+  /*
+   * layer.on('mousedown', function () {
+        if (!hoverFeatures.length) return;
+        activateTempLabelMode();
+      });
+   */
 
   layer.on('mousemove', function (e) {
     if (isMarker) {

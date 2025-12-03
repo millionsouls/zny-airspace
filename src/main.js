@@ -172,10 +172,14 @@ fetch('data/file-index.json')
 
     document.getElementById("btn-tracon").addEventListener("click", () => switchDomain("tracon"));
     document.getElementById("btn-enroute").addEventListener("click", () => switchDomain("enroute"));
+    // Cycle label mode: pos -> sector -> combined -> pos
     callsignBtn.addEventListener("click", () => {
       if (window.LABEL_MODE === 'pos') {
         window.LABEL_MODE = 'sector';
         callsignBtn.innerHTML = '<i class="fa-solid fa-headset"></i> Callsign';
+      } else if (window.LABEL_MODE === 'sector') {
+        window.LABEL_MODE = 'combined';
+        callsignBtn.innerHTML = '<i class="fa-solid fa-layer-group"></i> Combined';
       } else {
         window.LABEL_MODE = 'pos';
         callsignBtn.innerHTML = '<i class="fa-solid fa-id-badge"></i> ID';
