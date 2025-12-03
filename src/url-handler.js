@@ -3,6 +3,8 @@
  * 
  */
 
+// TODO: Define preset shortened URLs for all map combinations?
+
 // Category abbreviations for encoding
 const CAT_ABBR = { sectors: 1, stars: 2, sids: 3, videomap: 4 };
 const CAT_ABBR_REV = { 1: 'sectors', 2: 'stars', 3: 'sids', 4: 'videomap' };

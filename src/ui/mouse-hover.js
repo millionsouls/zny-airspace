@@ -88,7 +88,9 @@ function buildFeatureInfoHTML(features) {
       .join('');
 
     const firstProps = feats[0].properties || {};
-    // Determine label based on global mode: 'pos' (ID), 'sector' (Callsign), 'combined'
+
+    // Determine label based on mode
+
     let displayLabel = '';
     const posText = pos || firstProps.Position || firstProps.position || '';
     const secText = firstProps.Sector || firstProps.sector || '';
@@ -96,7 +98,6 @@ function buildFeatureInfoHTML(features) {
     if (window.LABEL_MODE === 'sector') {
       displayLabel = secText || posText;
     } else if (window.LABEL_MODE === 'combined') {
-      // Keep the hover box multi-line like before
       displayLabel = posText + '\n|\n' + (secText || '');
     } else {
       displayLabel = posText || secText;

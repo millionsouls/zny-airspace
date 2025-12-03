@@ -1,5 +1,5 @@
 /*
-Loading geojson files
+*
 */
 const ICONS = {
   "nbd": "100_Navaid_NBD.svg",

@@ -19,7 +19,7 @@ function makeCheckbox(id, label, checked = false) {
 }
 
 /**
- * Crawl a Leaflet layer (which may be a group) and return the first feature.properties we find.
+ * Crawl a Leaflet layer and return the first feature.properties found
  */
 function findAnyFeatureProps(layer) {
   let props = null;

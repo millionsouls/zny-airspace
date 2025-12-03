@@ -150,7 +150,7 @@ function storeMetadata(station, airport, category, name, group, isArray = false)
 }
 
 /**
- * Start point, loops through the file-index.json and loads it. Create promises to ensure files are loaded before anything else is done.
+ * Start point, loops through the file-index.json and loads it
  * 
  */
 function loadGeoFiles(GEOFILES, map) {

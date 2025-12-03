@@ -7,6 +7,11 @@
 import { GEOLAYERS } from './loader.js'
 import { updateURLFromMap } from './url-handler.js';
 
+/**
+ * Center on NY Area
+ * Bounded max to ZWY airspace
+ * 
+ */
 const CONFIG = {
   center: [40.703376, -74.015415],
   zoom: 7.5,
@@ -18,6 +23,12 @@ const CONFIG = {
     [50, -10]
   ],
 }
+
+/**
+ * Standard OSM map
+ * Satellite from ARCGIS
+ * Dark mode from ARCGIS
+ */
 const baseLayers = {
   "Standard": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors'
@@ -33,6 +44,9 @@ const baseLayers = {
 let currentLayer = baseLayers["Standard"]
 let basemapVisible = true
 
+/**
+ * Config map to take our settings and custom layers
+ */
 const map = L.map('map', {
   center: CONFIG.center,
   zoom: CONFIG.zoom,
@@ -47,6 +61,9 @@ const map = L.map('map', {
   smoothSensitivity: 5,   // zoom speed. default is 1
 });
 
+/**
+ * Reposition map controls and add new toggles
+ */
 L.control.scale({ position: 'bottomright' }).addTo(map);
 L.control.layers(baseLayers, null, { position: 'topright', collapsed: false }).addTo(map);
 L.control.zoom({ position: 'topright' }).addTo(map);

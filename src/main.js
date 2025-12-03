@@ -164,15 +164,15 @@ fetch('data/file-index.json')
     const callsignBtn = document.getElementById("toggle-callsign");
     const enabled = getLayersFromURL();
 
-    window.LABEL_MODE = 'pos';
-
     if (enabled) {
       window.LayerControl.setActive(enabled);
     }
 
     document.getElementById("btn-tracon").addEventListener("click", () => switchDomain("tracon"));
     document.getElementById("btn-enroute").addEventListener("click", () => switchDomain("enroute"));
-    // Cycle label mode: pos -> sector -> combined -> pos
+    // Cycle label mode: pos -> sector -> combined
+
+    window.LABEL_MODE = 'pos';
     callsignBtn.addEventListener("click", () => {
       if (window.LABEL_MODE === 'pos') {
         window.LABEL_MODE = 'sector';
