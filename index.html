@@ -6,6 +6,7 @@
   <title>ZNY Airspace Visualizer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <link rel="icon" type="image/x-icon" href="/assets/media/favicon.ico">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link id="jsapiStyles" rel="stylesheet" href="https://js.arcgis.com/4.33/esri/themes/dark/main.css">
 
@@ -74,7 +75,7 @@
   <!-- Map container -->
   <div id="map"></div>
 
-  <!-- LOAD ORDER -->
+  <!-- !! LOAD ORDER !! -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/esri-leaflet@3.0.9/dist/esri-leaflet.js"></script>
   <script src="https://unpkg.com/esri-leaflet-vector@4.0.2/dist/esri-leaflet-vector.js"></script>
@@ -88,18 +89,19 @@
   <script type="module" src="src/main.js"></script>
 
   <footer id="page-footer">
-    <a href="https://github.com/millionsouls/n90vis" target="_blank" rel="noopener noreferrer"
+    <a href="https://github.com/millionsouls/zny-airspace" target="_blank" rel="noopener noreferrer"
       title="GitHub Repository">
       <i class="fa-brands fa-github"></i>
       GitHub
     </a>
 
     <a href="https://nyartcc.org/" target="_blank" rel="noopener noreferrer" title="GitHub Repository">
-      <img src="assets/ZNY-transparent.png" class="footer-logo"></img>
+      <img src="assets/media/ZNY-transparent.png" class="footer-logo"></img>
       vZNY
     </a>
   </footer>
 
+  <!-- HELP POP UP -->
   <div id="help-modal" class="hidden">
     <div id="help-content">
       <span id="close-help">&times;</span>
