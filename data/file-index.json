@@ -81,9 +81,5 @@
       "WRI.geojson"
     ]
   },
-  "enroute": {
-    "area-b": [
-      "N56.geojson"
-    ]
-  }
+  "enroute": {}
 }
