@@ -41,7 +41,8 @@
       "videomap/N90 JFK - Config Change.geojson"
     ],
     "lga": [
-      "sectors/Depart 13 Land 22.geojson",
+      "sectors/Depart 13 Land 22 Belmont.geojson",
+      "sectors/Depart 13 Land 22 No Belmont.geojson",
       "sectors/Depart 13 Land 4.geojson",
       "sectors/Depart 13 Land ILS 13.geojson",
       "sectors/Depart 13 Land RNAV 13.geojson",
