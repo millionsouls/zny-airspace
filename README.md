@@ -4,8 +4,13 @@ Display TRACON airspace boundaries and shelves on Leaflet/OSM map layer. Additio
 <b>FOR FLIGHT SIMULATION PURPOSES ONLY.</b>
 Not for real world navigation. This site is in no way affiliated with the FAA, New York TRACON or New York ARTCC, and no information found on this site should ever be used for real world flight planning, operation, air traffic control or air traffic management
 
-Contact kevinw@nyartcc.org for questions/comments/concerns/inquiries.\
-(I'm really bad at writing documentation)
+Contact kevinw@nyartcc.org for questions/comments/concerns/inquiries.
+
+
+## Acknowledgments
+https://github.com/antoniolocandro/aeronautical_charting For aeronautical chart icons
+
+https://github.com/mutsuyuki/Leaflet.SmoothWheelZoom Better map scrolling on touchpads
 
 ## Features
 ### Searching
