@@ -68,6 +68,11 @@ L.control.scale({ position: 'bottomright' }).addTo(map);
 L.control.layers(baseLayers, null, { position: 'topright', collapsed: false }).addTo(map);
 L.control.zoom({ position: 'topright' }).addTo(map);
 
+// Track which map is selected
+map.on('baselayerchange', function (e) {
+  currentLayer = e.layer;
+});
+
 const mapToggle = document.getElementById('toggle-basemap');
 const resetToggle = document.getElementById('reset-layers');
 const markerToggle = document.getElementById('toggle-markers');
@@ -99,11 +104,27 @@ mapToggle.addEventListener('click', function () {
   if (basemapVisible) {
     map.addLayer(currentLayer);
     mapToggle.innerHTML = '<i class="fa-solid fa-map"></i> Map';
+
+    const leafletContainer = document.querySelector('.leaflet-container');
+
+    if (leafletContainer) {
+      leafletContainer.style.removeProperty('background');
+    }
   } else {
     mapToggle.innerHTML= '<i class="fa-regular fa-map"></i> Map';
     Object.values(baseLayers).forEach(layer => {
-      if (map.hasLayer(layer)) map.removeLayer(layer);
+      if (map.hasLayer(layer)) {
+        map.removeLayer(layer);
+      }
     });
+
+    // If dark map is selected then make the background also dark
+    if (currentLayer === baseLayers["Dark"]) {
+      const leafletContainer = document.querySelector('.leaflet-container');
+      if (leafletContainer){
+         leafletContainer.style.setProperty('background', '#1d1d1dff', 'important');
+      }
+    }
   }
 });
 

@@ -177,8 +177,8 @@ fetch('data/file-index.json')
       window.LayerControl.setActive(enabled);
     }
 
-    document.getElementById("btn-tracon").addEventListener("click", () => switchDomain("tracon"));
-    document.getElementById("btn-enroute").addEventListener("click", () => switchDomain("enroute"));
+    //document.getElementById("btn-tracon").addEventListener("click", () => switchDomain("tracon"));
+    //document.getElementById("btn-enroute").addEventListener("click", () => switchDomain("enroute"));
     // Cycle label mode: pos -> sector -> combined
 
     window.LABEL_MODE = 'pos';
