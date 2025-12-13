@@ -4,7 +4,7 @@
     "features": [
         {
             "type": "Feature",
-            "id": 140,
+            "id": 1,
             "geometry": {
                 "type": "Polygon",
                 "coordinates": [
@@ -68,7 +68,9 @@
                 ]
             },
             "properties": {
-                "OBJECTID": 140,
+                "OBJECTID": 1,
+                "Shape_Length": 2.322122111036073,
+                "Shape_Area": 0.21604480505879564,
                 "Position": "EN",
                 "Low": 0,
                 "High": 4000,
@@ -80,11 +82,21 @@
         },
         {
             "type": "Feature",
-            "id": 141,
+            "id": 2,
             "geometry": {
                 "type": "Polygon",
                 "coordinates": [
                     [
+                        [
+                            -77.235840277999955,
+                            42.175251944000081,
+                            0
+                        ],
+                        [
+                            -76.918486106999978,
+                            42.493409688000042,
+                            0
+                        ],
                         [
                             -77.176028157999951,
                             42.602896444000066,
@@ -109,22 +121,14 @@
                             -77.235840277999955,
                             42.175251944000081,
                             0
-                        ],
-                        [
-                            -76.917965742999968,
-                            42.493930047000049,
-                            0
-                        ],
-                        [
-                            -77.176028157999951,
-                            42.602896444000066,
-                            0
                         ]
                     ]
                 ]
             },
             "properties": {
-                "OBJECTID": 141,
+                "OBJECTID": 2,
+                "Shape_Length": 2.2201966313164063,
+                "Shape_Area": 0.18561669065192477,
                 "Position": "ES",
                 "Low": 0,
                 "High": 8000,
@@ -136,7 +140,7 @@
         },
         {
             "type": "Feature",
-            "id": 142,
+            "id": 3,
             "geometry": {
                 "type": "Polygon",
                 "coordinates": [
@@ -159,11 +163,6 @@
                         [
                             -76.430550467999979,
                             42.285437253000055,
-                            0
-                        ],
-                        [
-                            -76.917965742999968,
-                            42.493930047000049,
                             0
                         ],
                         [
@@ -205,7 +204,9 @@
                 ]
             },
             "properties": {
-                "OBJECTID": 142,
+                "OBJECTID": 3,
+                "Shape_Length": 3.0568664817462907,
+                "Shape_Area": 0.54251550540325988,
                 "Position": "ES",
                 "Low": 0,
                 "High": 8000,
@@ -217,7 +218,7 @@
         },
         {
             "type": "Feature",
-            "id": 143,
+            "id": 4,
             "geometry": {
                 "type": "Polygon",
                 "coordinates": [
@@ -256,7 +257,9 @@
                 ]
             },
             "properties": {
-                "OBJECTID": 143,
+                "OBJECTID": 4,
+                "Shape_Length": 1.3471466335104907,
+                "Shape_Area": 0.098771471195198704,
                 "Position": "ES",
                 "Low": 0,
                 "High": 5000,
