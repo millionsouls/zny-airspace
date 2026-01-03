@@ -81,5 +81,15 @@
       "WRI.geojson"
     ]
   },
-  "enroute": {}
+  "enroute": {
+    "area-a": [
+      "Area A.geojson",
+      "AREAA WAYPOINTS.geojson",
+      "AREAA.geojson"
+    ],
+    "area-b": [
+      "Area B.geojson",
+      "AREAB.geojson"
+    ]
+  }
 }
