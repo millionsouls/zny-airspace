@@ -4,7 +4,7 @@
     "features": [
         {
             "type": "Feature",
-            "id": 123,
+            "id": 1,
             "geometry": {
                 "type": "Polygon",
                 "coordinates": [
@@ -38,7 +38,9 @@
                 ]
             },
             "properties": {
-                "OBJECTID": 123,
+                "OBJECTID": 1,
+                "Shape_Length": 0.55474827120251446,
+                "Shape_Area": 0.012294626718197123,
                 "Position": "WB",
                 "Low": 6000,
                 "High": 10000,
@@ -50,7 +52,7 @@
         },
         {
             "type": "Feature",
-            "id": 124,
+            "id": 2,
             "geometry": {
                 "type": "Polygon",
                 "coordinates": [
@@ -89,7 +91,9 @@
                 ]
             },
             "properties": {
-                "OBJECTID": 124,
+                "OBJECTID": 2,
+                "Shape_Length": 0.51241307044538831,
+                "Shape_Area": 0.013361467432247141,
                 "Position": "WB",
                 "Low": 8000,
                 "High": 10000,
@@ -101,7 +105,7 @@
         },
         {
             "type": "Feature",
-            "id": 125,
+            "id": 3,
             "geometry": {
                 "type": "Polygon",
                 "coordinates": [
@@ -150,7 +154,9 @@
                 ]
             },
             "properties": {
-                "OBJECTID": 125,
+                "OBJECTID": 3,
+                "Shape_Length": 1.1126540444158151,
+                "Shape_Area": 0.053173269730637594,
                 "Position": "WB",
                 "Low": 9000,
                 "High": 10000,
@@ -162,7 +168,7 @@
         },
         {
             "type": "Feature",
-            "id": 126,
+            "id": 4,
             "geometry": {
                 "type": "Polygon",
                 "coordinates": [
@@ -201,7 +207,9 @@
                 ]
             },
             "properties": {
-                "OBJECTID": 126,
+                "OBJECTID": 4,
+                "Shape_Length": 0.97500969194021536,
+                "Shape_Area": 0.029452784393239437,
                 "Position": "WB",
                 "Low": 7000,
                 "High": 10000,
@@ -213,7 +221,7 @@
         },
         {
             "type": "Feature",
-            "id": 127,
+            "id": 5,
             "geometry": {
                 "type": "Polygon",
                 "coordinates": [
@@ -262,7 +270,9 @@
                 ]
             },
             "properties": {
-                "OBJECTID": 127,
+                "OBJECTID": 5,
+                "Shape_Length": 2.5233268815485714,
+                "Shape_Area": 0.31307019689719517,
                 "Position": "WB",
                 "Low": 9000,
                 "High": 10000,
@@ -274,7 +284,7 @@
         },
         {
             "type": "Feature",
-            "id": 128,
+            "id": 6,
             "geometry": {
                 "type": "Polygon",
                 "coordinates": [
@@ -363,7 +373,9 @@
                 ]
             },
             "properties": {
-                "OBJECTID": 128,
+                "OBJECTID": 6,
+                "Shape_Length": 3.3405148339975015,
+                "Shape_Area": 0.46734410234238249,
                 "Position": "WB",
                 "Low": 0,
                 "High": 10000,
@@ -375,7 +387,7 @@
         },
         {
             "type": "Feature",
-            "id": 129,
+            "id": 7,
             "geometry": {
                 "type": "Polygon",
                 "coordinates": [
@@ -486,6 +498,11 @@
                             0
                         ],
                         [
+                            -76.371409283999981,
+                            40.843090216000064,
+                            0
+                        ],
+                        [
                             -76.338896666999972,
                             40.834499167000047,
                             0
@@ -499,7 +516,9 @@
                 ]
             },
             "properties": {
-                "OBJECTID": 129,
+                "OBJECTID": 7,
+                "Shape_Length": 4.5410533029144169,
+                "Shape_Area": 0.58407788463373944,
                 "Position": "WE",
                 "Low": 0,
                 "High": 8000,
@@ -511,7 +530,7 @@
         },
         {
             "type": "Feature",
-            "id": 130,
+            "id": 8,
             "geometry": {
                 "type": "Polygon",
                 "coordinates": [
@@ -550,7 +569,9 @@
                 ]
             },
             "properties": {
-                "OBJECTID": 130,
+                "OBJECTID": 8,
+                "Shape_Length": 0.85755534125461352,
+                "Shape_Area": 0.023310335965537096,
                 "Position": "WE",
                 "Low": 0,
                 "High": 4000,
@@ -562,16 +583,11 @@
         },
         {
             "type": "Feature",
-            "id": 131,
+            "id": 9,
             "geometry": {
                 "type": "Polygon",
                 "coordinates": [
                     [
-                        [
-                            -75.278272221999941,
-                            41.037554722000039,
-                            0
-                        ],
                         [
                             -75.179141389999984,
                             41.250020556000038,
@@ -591,12 +607,19 @@
                             -75.278272221999941,
                             41.037554722000039,
                             0
+                        ],
+                        [
+                            -75.179141389999984,
+                            41.250020556000038,
+                            0
                         ]
                     ]
                 ]
             },
             "properties": {
-                "OBJECTID": 131,
+                "OBJECTID": 9,
+                "Shape_Length": 0.68127825758590554,
+                "Shape_Area": 0.026050686616164723,
                 "Position": "WE",
                 "Low": 0,
                 "High": 6000,

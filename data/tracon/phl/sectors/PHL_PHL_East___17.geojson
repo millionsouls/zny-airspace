@@ -1,6 +1,7 @@
 {
     "hasZ": true,
     "type": "FeatureCollection",
+    "name": "East 17",
     "features": [
         {
             "type": "Feature",
@@ -2559,7 +2560,7 @@
                 "Low": 7000,
                 "High": 12000,
                 "Notes": null,
-                "Fill": "#DDFEE8",
+                "Fill": "#DDBEE8",
                 "Stroke": "#DDBEE8",
                 "Sector": "South Departure"
             }

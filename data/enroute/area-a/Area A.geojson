@@ -259,8 +259,8 @@
                 "Low": 34000,
                 "High": 60000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#267300",
+                "Stroke": "#267300"
             }
         },
         {
@@ -465,8 +465,8 @@
                 "Low": 24000,
                 "High": 33000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#5C8944",
+                "Stroke": "#5C8944"
             }
         },
         {
@@ -601,8 +601,8 @@
                 "Low": 29000,
                 "High": 33000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#5C8944",
+                "Stroke": "#5C8944"
             }
         },
         {
@@ -702,8 +702,8 @@
                 "Low": 22000,
                 "High": 33000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#B4D79E",
+                "Stroke": "#B4D79E"
             }
         },
         {
@@ -793,8 +793,8 @@
                 "Low": 26000,
                 "High": 33000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#B4D79E",
+                "Stroke": "#B4D79E"
             }
         },
         {
@@ -1034,8 +1034,8 @@
                 "Low": 24000,
                 "High": 33000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#B4D79E",
+                "Stroke": "#B4D79E"
             }
         },
         {
@@ -1160,8 +1160,8 @@
                 "Low": 29000,
                 "High": 33000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#B4D79E",
+                "Stroke": "#B4D79E"
             }
         },
         {
@@ -1291,8 +1291,8 @@
                 "Low": 18000,
                 "High": 23000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#89CD66",
+                "Stroke": "#89CD66"
             }
         },
         {
@@ -1342,8 +1342,8 @@
                 "Low": 15000,
                 "High": 23000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#89CD66",
+                "Stroke": "#89CD66"
             }
         },
         {
@@ -1498,8 +1498,8 @@
                 "Low": 12000,
                 "High": 23000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#89CD66",
+                "Stroke": "#89CD66"
             }
         },
         {
@@ -2179,8 +2179,8 @@
                 "Low": 18000,
                 "High": 23000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#89CD66",
+                "Stroke": "#89CD66"
             }
         },
         {
@@ -2230,8 +2230,8 @@
                 "Low": 11000,
                 "High": 17000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#89CD66",
+                "Stroke": "#89CD66"
             }
         },
         {
@@ -2281,8 +2281,8 @@
                 "Low": 14000,
                 "High": 17000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#89CD66",
+                "Stroke": "#89CD66"
             }
         },
         {
@@ -2357,8 +2357,8 @@
                 "Low": 14000,
                 "High": 23000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#89CD66",
+                "Stroke": "#89CD66"
             }
         },
         {
@@ -3113,8 +3113,8 @@
                 "Low": 11000,
                 "High": 23000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#89CD66",
+                "Stroke": "#89CD66"
             }
         },
         {
@@ -3189,8 +3189,8 @@
                 "Low": 9000,
                 "High": 11000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#A5F57A",
+                "Stroke": "#A5F57A"
             }
         },
         {
@@ -4075,8 +4075,8 @@
                 "Low": 7000,
                 "High": 23000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#A5F57A",
+                "Stroke": "#A5F57A"
             }
         },
         {
@@ -4121,8 +4121,8 @@
                 "Low": 9000,
                 "High": 17000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#A5F57A",
+                "Stroke": "#A5F57A"
             }
         },
         {
@@ -5102,8 +5102,8 @@
                 "Low": 9000,
                 "High": 23000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#A5F57A",
+                "Stroke": "#A5F57A"
             }
         },
         {
@@ -6658,8 +6658,8 @@
                 "Low": 7000,
                 "High": 17000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#A5F57A",
+                "Stroke": "#A5F57A"
             }
         },
         {
@@ -7584,8 +7584,8 @@
                 "Low": 14000,
                 "High": 17000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#A5F57A",
+                "Stroke": "#A5F57A"
             }
         },
         {
@@ -7920,8 +7920,8 @@
                 "Low": 9000,
                 "High": 17000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#A5F57A",
+                "Stroke": "#A5F57A"
             }
         },
         {
@@ -8286,8 +8286,8 @@
                 "Low": 14000,
                 "High": 17000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#A5F57A",
+                "Stroke": "#A5F57A"
             }
         },
         {
@@ -8382,8 +8382,8 @@
                 "Low": 9000,
                 "High": 25000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#38A800",
+                "Stroke": "#38A800"
             }
         },
         {
@@ -8448,8 +8448,8 @@
                 "Low": 9000,
                 "High": 21000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#38A800",
+                "Stroke": "#38A800"
             }
         },
         {
@@ -8509,8 +8509,8 @@
                 "Low": 10000,
                 "High": 21000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#38A800",
+                "Stroke": "#38A800"
             }
         },
         {
@@ -8600,8 +8600,8 @@
                 "Low": 13000,
                 "High": 21000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#38A800",
+                "Stroke": "#38A800"
             }
         },
         {
@@ -8656,8 +8656,8 @@
                 "Low": 18000,
                 "High": 21000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#38A800",
+                "Stroke": "#38A800"
             }
         },
         {
@@ -8732,8 +8732,8 @@
                 "Low": 18000,
                 "High": 21000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#38A800",
+                "Stroke": "#38A800"
             }
         },
         {
@@ -8788,8 +8788,8 @@
                 "Low": 14000,
                 "High": 21000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#38A800",
+                "Stroke": "#38A800"
             }
         },
         {
@@ -9109,8 +9109,8 @@
                 "Low": 34000,
                 "High": 60000,
                 "Notes": null,
-                "Fill": null,
-                "Stroke": null
+                "Fill": "#487744",
+                "Stroke": "#487744"
             }
         }
     ]

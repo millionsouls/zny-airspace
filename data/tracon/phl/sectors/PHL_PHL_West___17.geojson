@@ -1,6 +1,7 @@
 {
     "hasZ": true,
     "type": "FeatureCollection",
+    "name": "West 17",
     "features": [
         {
             "type": "Feature",

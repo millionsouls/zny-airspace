@@ -41,19 +41,19 @@
       "videomap/N90 JFK - Config Change.geojson"
     ],
     "lga": [
-      "sectors/Depart 13 Land 22 Belmont.geojson",
-      "sectors/Depart 13 Land 22 No Belmont.geojson",
-      "sectors/Depart 13 Land 4.geojson",
-      "sectors/Depart 13 Land ILS 13.geojson",
-      "sectors/Depart 13 Land RNAV 13.geojson",
-      "sectors/Depart 22 Land 22.geojson",
-      "sectors/Depart 31 Land 22.geojson",
-      "sectors/Depart 31 Land 4.geojson",
-      "sectors/Depart 31 Land RNAVX 31.geojson",
-      "sectors/Depart 31 Land RNAVZ 31.geojson",
-      "sectors/Depart 4 Land 4 or RNAVX 31.geojson",
-      "sectors/Depart 4 Land ILS 13.geojson",
-      "sectors/Depart 4 Land RNAVZ 31.geojson",
+      "sectors/LGA_LGA_Depart_13_Land_22__Belmont_.geojson",
+      "sectors/LGA_LGA_Depart_13_Land_22__No_Belmont_.geojson",
+      "sectors/LGA_LGA_Depart_13_Land_4.geojson",
+      "sectors/LGA_LGA_Depart_13_Land_ILS_13.geojson",
+      "sectors/LGA_LGA_Depart_13_Land_RNAV_13.geojson",
+      "sectors/LGA_LGA_Depart_22_Land_22.geojson",
+      "sectors/LGA_LGA_Depart_31_Land_22.geojson",
+      "sectors/LGA_LGA_Depart_31_Land_4.geojson",
+      "sectors/LGA_LGA_Depart_31_Land_RNAV_X_31.geojson",
+      "sectors/LGA_LGA_Depart_31_Land_RNAV_Z_31.geojson",
+      "sectors/LGA_LGA_Depart_4_Land_4_or_RNAV_X_31.geojson",
+      "sectors/LGA_LGA_Depart_4_Land_ILS_13.geojson",
+      "sectors/LGA_LGA_Depart_4_Land_RNAV_Z_31.geojson",
       "videomap/N90 LGA - LOC 31.geojson",
       "videomap/N90 LGA - Video Map.geojson"
     ],
@@ -69,10 +69,10 @@
       "videomap/MDT - West.geojson"
     ],
     "phl": [
-      "sectors/East 17.geojson",
-      "sectors/East 35.geojson",
-      "sectors/West 17.geojson",
-      "sectors/West 35.geojson",
+      "sectors/PHL_PHL_East___17.geojson",
+      "sectors/PHL_PHL_East___35.geojson",
+      "sectors/PHL_PHL_West___17.geojson",
+      "sectors/PHL_PHL_West___35.geojson",
       "videomap/PHL - Video Map East.geojson",
       "videomap/PHL - Video Map West.geojson"
     ],
@@ -83,13 +83,19 @@
   },
   "enroute": {
     "area-a": [
-      "Area A.geojson",
-      "AREAA WAYPOINTS.geojson",
-      "AREAA.geojson"
+      "Area A.geojson"
     ],
     "area-b": [
-      "Area B.geojson",
-      "AREAB.geojson"
+      "Area B.geojson"
+    ],
+    "area-c": [
+      "Area C.geojson"
+    ],
+    "area-d": [
+      "Area D.geojson"
+    ],
+    "area-e-f": [
+      "Area E-F.geojson"
     ]
   }
 }

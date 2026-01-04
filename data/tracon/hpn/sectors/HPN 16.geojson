@@ -109,7 +109,7 @@
                 "Low": 0,
                 "High": 5000,
                 "Notes": null,
-                "FIll": "#FFFF00",
+                "Fill": "#FFFF00",
                 "Stroke": "#FFFF00"
             }
         },
@@ -155,7 +155,7 @@
                 "Low": 0,
                 "High": 5000,
                 "Notes": "N1X releases 3000 and below to N5H when SWF ILS 27 or N69 approaches in use",
-                "FIll": "#FFFF00",
+                "Fill": "#FFFF00",
                 "Stroke": "#FFFF00"
             }
         },
@@ -226,7 +226,7 @@
                 "Low": 0,
                 "High": 3000,
                 "Notes": null,
-                "FIll": "#FFFF00",
+                "Fill": "#FFFF00",
                 "Stroke": "#FFFF00"
             }
         },
@@ -332,7 +332,7 @@
                 "Low": 0,
                 "High": 2000,
                 "Notes": null,
-                "FIll": "#FFFF00",
+                "Fill": "#FFFF00",
                 "Stroke": "#FFFF00"
             }
         },
@@ -403,7 +403,7 @@
                 "Low": 0,
                 "High": 2000,
                 "Notes": "NA when LGA Landing 22",
-                "FIll": "#FFFF00",
+                "Fill": "#FFFF00",
                 "Stroke": "#FFFF00"
             }
         },
@@ -454,7 +454,7 @@
                 "Low": 6000,
                 "High": 7000,
                 "Notes": null,
-                "FIll": "#A8A800",
+                "Fill": "#A8A800",
                 "Stroke": "#A8A800"
             }
         },
@@ -505,7 +505,7 @@
                 "Low": 4000,
                 "High": 7000,
                 "Notes": null,
-                "FIll": "#A8A800",
+                "Fill": "#A8A800",
                 "Stroke": "#A8A800"
             }
         },
@@ -601,7 +601,7 @@
                 "Low": 0,
                 "High": 4000,
                 "Notes": null,
-                "FIll": "#FFFF00",
+                "Fill": "#FFFF00",
                 "Stroke": "#FFFF00"
             }
         },
@@ -647,7 +647,7 @@
                 "Low": 0,
                 "High": 3000,
                 "Notes": null,
-                "FIll": "#FFFF00",
+                "Fill": "#FFFF00",
                 "Stroke": "#FFFF00"
             }
         },
@@ -773,7 +773,7 @@
                 "Low": 0,
                 "High": 11000,
                 "Notes": null,
-                "FIll": "#A8A800",
+                "Fill": "#A8A800",
                 "Stroke": "#A8A800"
             }
         },
@@ -819,7 +819,7 @@
                 "Low": 4000,
                 "High": 11000,
                 "Notes": null,
-                "FIll": "#A8A800",
+                "Fill": "#A8A800",
                 "Stroke": "#A8A800"
             }
         },
@@ -875,7 +875,7 @@
                 "Low": 5000,
                 "High": 11000,
                 "Notes": null,
-                "FIll": "#A8A800",
+                "Fill": "#A8A800",
                 "Stroke": "#A8A800"
             }
         },
@@ -941,7 +941,7 @@
                 "Low": 5000,
                 "High": 7000,
                 "Notes": null,
-                "FIll": "#A8A800",
+                "Fill": "#A8A800",
                 "Stroke": "#A8A800"
             }
         },
@@ -1007,7 +1007,7 @@
                 "Low": 9000,
                 "High": 11000,
                 "Notes": null,
-                "FIll": "#A8A800",
+                "Fill": "#A8A800",
                 "Stroke": "#A8A800"
             }
         },
@@ -1063,7 +1063,7 @@
                 "Low": 5000,
                 "High": 5000,
                 "Notes": null,
-                "FIll": "#A8A800",
+                "Fill": "#A8A800",
                 "Stroke": "#A8A800"
             }
         },
@@ -1119,7 +1119,7 @@
                 "Low": 9000,
                 "High": 11000,
                 "Notes": null,
-                "FIll": "#A8A800",
+                "Fill": "#A8A800",
                 "Stroke": "#A8A800"
             }
         },
@@ -1170,7 +1170,7 @@
                 "Low": 5000,
                 "High": 11000,
                 "Notes": null,
-                "FIll": "#A8A800",
+                "Fill": "#A8A800",
                 "Stroke": "#A8A800"
             }
         },
@@ -1216,7 +1216,7 @@
                 "Low": 0,
                 "High": 3000,
                 "Notes": null,
-                "FIll": "#A8A800",
+                "Fill": "#A8A800",
                 "Stroke": "#A8A800"
             }
         },
@@ -1292,7 +1292,7 @@
                 "Low": 0,
                 "High": 3000,
                 "Notes": "N1X releases 3000 and below to N5H when SWF ILS 27",
-                "FIll": "#FFFF00",
+                "Fill": "#FFFF00",
                 "Stroke": "#FFFF00"
             }
         },
@@ -1333,7 +1333,7 @@
                 "Low": 4000,
                 "High": 5000,
                 "Notes": null,
-                "FIll": "#FFFF00",
+                "Fill": "#FFFF00",
                 "Stroke": "#FFFF00"
             }
         },
@@ -1374,7 +1374,7 @@
                 "Low": 0,
                 "High": 5000,
                 "Notes": "N1X releases 3000 and below to N5H when N69 approaches in use",
-                "FIll": "#FFFF00",
+                "Fill": "#FFFF00",
                 "Stroke": "#FFFF00"
             }
         }
